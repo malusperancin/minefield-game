@@ -1,0 +1,53 @@
+body {
+    margin: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.container {
+    font-size: 15px;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid {
+    background-color: rgb(80, 176, 205);
+    width: 500px;
+    height: 500px;
+    display: none;
+}
+
+.form {    
+    width: 15vw;
+}
+
+.options {
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.generateButton {
+    background-color: orange;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 40% 30px 40%;
+}
+
+.generateButton:hover{
+    cursor: pointer;
+}
+
+input {
+    width: 50px;
+}
+
+td {
+    width: 20px;
+    height: 20px;
+    border: 1px solid black;
+}
