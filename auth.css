@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: rgb(236, 236, 236);
+}
+
+.container {
+    font-size: 15px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.header img{
+    width: 50px;
+    height: 50px;
+}
+
+
+.options {
+    margin: 10px 0;
+    width: fit-content;
+}
+
+.enterButton {
+    background-color: rgb(202, 41, 41);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    font-weight: 700;
+    transition: all 0.3s ease-in-out;
+    color: white;
+}
+
+.enterButton:hover{
+    cursor: pointer;
+    background-color: rgb(158, 0, 0);
+}
+
+.options input {
+    width: 200px;
+    padding: 7px;
+    border-radius: 6px;
+    border: 1px solid black;
+}
+
+footer img{
+    position: fixed;
+    bottom: 0;
+    left: 40%;
+}
