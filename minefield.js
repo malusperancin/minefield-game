@@ -103,7 +103,7 @@ function onCellClick(clickedBomb, infos) {
     if (hasBomb(clickedBomb, bombs)) 
         cell.innerHTML = '<img class="bombImage" src="./images/bomb.png" alt="" />';
     else
-        verifySpace(clickedBomb.x, clickedBomb.y, bombs, linesNumber, columnsNumber);
+        verifySpace(clickedBomb.x, clickedBomb.y, bombs, columnsNumber, linesNumber);
 }
 
 function setFlag(clickedBomb) {
@@ -119,7 +119,6 @@ function hasBomb(potencialBomb, bombs) {
 
 function verifySpace(x, y, bombs, xMax, yMax) {
     let totalBombsCount = 0;
-
     for (let i = x - 1; i <= x + 1; i++) {
         for (let j = y - 1; j <= y + 1; j++) {
             if ((i === x && j === y) || i < 0 || j < 0 || i >= xMax || j >= yMax) continue;
