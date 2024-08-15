@@ -13,7 +13,6 @@ function generateBombs(bombsNumber, lines, columns) {
         bombs.push(bomb);
     }
 
-    console.log(bombs);
     return bombs;
 }
 
@@ -67,6 +66,7 @@ function generateGame() {
 
 
 function renderGrid(infos) {
+    document.addEventListener('contextmenu', event => event.preventDefault());
     const table = document.getElementById("table");
     table.innerHTML = '';
     for (let lin = 0; lin < infos.linesNumber; lin++) {
@@ -82,6 +82,14 @@ function renderGrid(infos) {
                 }
                 return () => onCellClick(clickedBomb, infos);
             })(lin, col));
+
+            newTd.addEventListener("contextmenu", ((lin, col) => {
+                const clickedBomb = {
+                    x: col,
+                    y: lin,
+                }
+                return () => setFlag(clickedBomb);
+            })(lin, col));
             newTr.appendChild(newTd);
         }
         table.appendChild(newTr);
@@ -92,10 +100,17 @@ function renderGrid(infos) {
 function onCellClick(clickedBomb, infos) {
     const { bombs, linesNumber, columnsNumber } = infos;
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
-    if (hasBomb(clickedBomb, bombs))
+    if (hasBomb(clickedBomb, bombs)) 
         cell.innerHTML = '<img class="bombImage" src="./images/bomb.png" alt="" />';
     else
         verifySpace(clickedBomb.x, clickedBomb.y, bombs, linesNumber, columnsNumber);
+}
+
+function setFlag(clickedBomb) {
+    const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
+    if (!cell.classList.contains('revealed')) {
+        cell.innerHTML = '<img class="bombImage" src="./images/flag.png" alt="" />';
+    }
 }
 
 function hasBomb(potencialBomb, bombs) {
