@@ -99,9 +99,7 @@ function onCellClick(clickedBomb, infos) {
 }
 
 function hasBomb(potencialBomb, bombs) {
-    if (bombs.some(existingBomb => existingBomb.x === potencialBomb.x && existingBomb.y === potencialBomb.y)) 
-        return true;
-    return false;
+    return bombs.some(existingBomb => existingBomb.x === potencialBomb.x && existingBomb.y === potencialBomb.y);
 }
 
 function verifySpace(x, y, bombs, xMax, yMax) {
@@ -111,21 +109,36 @@ function verifySpace(x, y, bombs, xMax, yMax) {
         for (let j = y - 1; j <= y + 1; j++) {
             if ((i === x && j === y) || i < 0 || j < 0 || i >= xMax || j >= yMax) continue;
 
-            if (hasBomb({ x: i, y: j }, bombs)) totalBombsCount++;
+            if (hasBomb({ x: i, y: j }, bombs)) {
+                totalBombsCount++;
+            }
         }
     }
 
-    if (totalBombsCount > 0)
-        showNumber(x, y, totalBombsCount);
-    
+    const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
+    if (cell.classList.contains('revealed')) return;
 
-    return 0;
+    cell.classList.add('revealed');
+    cell.style.backgroundColor = 'gray';
+
+    if (totalBombsCount > 0) {
+        showNumber(x, y, totalBombsCount);
+    } else {
+        for (let i = x - 1; i <= x + 1; i++) {
+            for (let j = y - 1; j <= y + 1; j++) {
+                if ((i === x && j === y) || i < 0 || j < 0 || i >= xMax || j >= yMax) continue;
+                verifySpace(i, j, bombs, xMax, yMax);
+            }
+        }
+    }
 }
+
 function showNumber(x, y, number) {
     const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
     cell.innerHTML = number;
-
+    cell.style.backgroundColor = 'gray';
 }
+
 
 // function finishGame() {
 //     showAllBombs();
