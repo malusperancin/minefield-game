@@ -52,7 +52,7 @@ function generateGame() {
     }
 
     document.getElementById("form").style.display = "none";
-    document.getElementById("grid").style.display = "block";
+    document.getElementById("grid").style.display = "flex";
 
     const bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
 
@@ -67,28 +67,64 @@ function generateGame() {
 
 
 function renderGrid(infos) {
+    const table = document.getElementById("table");
+    table.innerHTML = '';
     for (let lin = 0; lin < infos.linesNumber; lin++) {
         const newTr = document.createElement("tr");
-        for (col = 0; col < infos.columnsNumber; col++) {
+        for (let col = 0; col < infos.columnsNumber; col++) {
             const newTd = document.createElement("td");
+            newTd.setAttribute('data-x', col);
+            newTd.setAttribute('data-y', lin);
             newTd.addEventListener("click", ((lin, col) => {
                 const clickedBomb = {
                     x: col,
                     y: lin,
                 }
-                return () => onCellClick(clickedBomb, infos.bombs);
+                return () => onCellClick(clickedBomb, infos);
             })(lin, col));
             newTr.appendChild(newTd);
         }
-        document.getElementById("table").appendChild(newTr);
+        table.appendChild(newTr);
     }
 }
 
-function onCellClick(clickedBomb, bombs) {
-    if (bombs.some(existingBomb => existingBomb.x === clickedBomb.x && existingBomb.y === clickedBomb.y)) {
-        console.log("BOMBA");
-        // finishGame();
+
+function onCellClick(clickedBomb, infos) {
+    const { bombs, linesNumber, columnsNumber } = infos;
+    const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
+    if (hasBomb(clickedBomb, bombs))
+        cell.innerHTML = '<img class="bombImage" src="./images/bomb.png" alt="" />';
+    else
+        verifySpace(clickedBomb.x, clickedBomb.y, bombs, linesNumber, columnsNumber);
+}
+
+function hasBomb(potencialBomb, bombs) {
+    if (bombs.some(existingBomb => existingBomb.x === potencialBomb.x && existingBomb.y === potencialBomb.y)) 
+        return true;
+    return false;
+}
+
+function verifySpace(x, y, bombs, xMax, yMax) {
+    let totalBombsCount = 0;
+
+    for (let i = x - 1; i <= x + 1; i++) {
+        for (let j = y - 1; j <= y + 1; j++) {
+            if ((i === x && j === y) || i < 0 || j < 0 || i >= xMax || j >= yMax) continue;
+
+            if (hasBomb({ x: i, y: j }, bombs)) totalBombsCount++;
+        }
     }
+
+    if (totalBombsCount > 0)
+        showNumber(x, y, totalBombsCount);
+    
+
+    return 0;
+}
+function showNumber(x, y, number) {
+    const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
+    cell.innerHTML = number;
+
 }
 
 // function finishGame() {

@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="minefield.css" />
+    <link rel="stylesheet" type="text/css" href="minefield.css">
     <script src="minefield.js"></script>
+    <title>Minefield</title>
 </head>
 
 <body>
@@ -14,20 +15,21 @@
         <div class="form" id="form">
             <div class="options">
                 <label> Quantas linhas? </label>
-                <input type="number" name="lines" id="lines" />
+                <input type="number" name="lines" id="lines">
             </div>
             <div class="options">
                 <label> Quantas colunas? </label>
-                <input type="number" name="columns" id="columns" />
+                <input type="number" name="columns" id="columns">
             </div>
             <div class="options">
                 <label> Quantas bombas? </label>
-                <input type="number" name="bombs" id="bombs" />
+                <input type="number" name="bombs" id="bombs">
             </div>
             <button class="generateButton" onclick="generateGame()">Iniciar</button>
         </div>
         <div class="grid" id="grid">
             <table class="table" id="table">
+            </table>
         </div>
     </div>
 </body>
