@@ -3,8 +3,8 @@ function generateBombs(bombsNumber, lines, columns) {
 
     for (let i = 0; i < bombsNumber; i++) {
         const bomb = {
-            x: parseInt(Math.random() * lines),
-            y: parseInt(Math.random() * columns),
+            x: parseInt(Math.random() * columns),
+            y: parseInt(Math.random() * lines),
         }
         if (bombs.some(existingBomb => existingBomb.x === bomb.x && existingBomb.y === bomb.y)) {
             i--;
