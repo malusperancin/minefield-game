@@ -11,25 +11,68 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="form" id="form">
-            <div class="options">
-                <label> Quantas linhas? </label>
-                <input type="number" name="lines" id="lines">
-            </div>
-            <div class="options">
-                <label> Quantas colunas? </label>
-                <input type="number" name="columns" id="columns">
-            </div>
-            <div class="options">
-                <label> Quantas bombas? </label>
-                <input type="number" name="bombs" id="bombs">
-            </div>
-            <button class="generateButton" onclick="generateGame()">Iniciar</button>
+    <div class="header">
+        <h1>Minefield</h1>
+        <img
+        src="https://cdn-icons-png.flaticon.com/512/486/486968.png"
+        alt="bomba"
+        />
+    </div>
+    <div class="infos" id="infos">
+        <div class="infoContainer">
+            <p class="label"> Tempo </p>
+            <p class="timerInfo"> 00:00 </p>
         </div>
-        <div class="grid" id="grid">
-            <table class="table" id="table">
-            </table>
+        <div class="infoContainer">
+            <p class="label"> Dimensão </p>
+            <p class="dimensionInfo"> 30x30 </p>
+        </div>
+        <div class="infoContainer">
+            <p class="label"> Modo </p>
+            <p class="modeInfo"> Rivotril </p>
+        </div>
+        <button class="infoContainer cheat"> 
+            <p class="label"> Trapaça </p>
+            <span class="cheatFlag"> OFF </span>
+        </button>
+    </div>
+    <div class="container">
+        <div class="content">
+            <div class="form" id="form">
+                <div class="options">
+                    <label> Quantas linhas? </label>
+                    <input type="number" name="lines" id="lines">
+                </div>
+                <div class="options">
+                    <label> Quantas colunas? </label>
+                    <input type="number" name="columns" id="columns">
+                </div>
+                <div class="options">
+                    <label> Quantas bombas? </label>
+                    <input type="number" name="bombs" id="bombs">
+                </div>
+                <div class="mode">
+                    <label> Qual modo de jogo? </label>
+                    </div>
+                    <div class="options">
+                    <label> Normal </label>
+                    <input type="radio" name="lines" id="lines">
+                    <label> Rivotril </label>
+                    <input type="radio" name="lines" id="lines">
+                </div>
+                <button class="generateButton" onclick="generateGame()">Iniciar</button>
+            </div>
+            <div class="grid" id="grid">
+                <table class="table" id="table">
+                </table>
+            </div>
+            <div class="endGame" id="endGame">
+                <p class="endGameText"> Você perdeu! </p>
+                <div class="options">
+                    <button class="endGameButton" onclick="">Tela inicial</button>
+                    <button class="endGameButton" class="" onclick="">Novo Jogo</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>

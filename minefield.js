@@ -51,6 +51,7 @@ function generateGame() {
     }
 
     document.getElementById("form").style.display = "none";
+    document.getElementById("infos").style.display = "flex";
     document.getElementById("grid").style.display = "flex";
 
     const bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
