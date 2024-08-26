@@ -21,7 +21,7 @@ function generateGame() {
     const columnsNumber = document.getElementById("columns").value;
     const bombsNumber = document.getElementById("bombs").value;
 
-    const existingError = document.getElementById("error-message");
+    const existingError = document.getElementById("errorMessage");
     if (existingError) {
         existingError.remove();
     }
@@ -38,7 +38,7 @@ function generateGame() {
 
     if (errorMessage) {
         const errorElement = document.createElement("div");
-        errorElement.id = "error-message";
+        errorElement.id = "errorMessage";
         errorElement.style.color = "red";
         errorElement.textContent = errorMessage;
         document.getElementById("form").appendChild(errorElement);
@@ -102,7 +102,7 @@ function onCellClick(clickedBomb, infos) {
     const { bombs, linesNumber, columnsNumber } = infos;
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
     if (hasBomb(clickedBomb, bombs)) 
-        cell.innerHTML = '<img class="bombImage" src="./images/bomb.png" alt="" />';
+        cell.innerHTML = '<img class="bomb" src="./images/bomb.png" alt="" />';
     else
         verifySpace(clickedBomb.x, clickedBomb.y, bombs, columnsNumber, linesNumber);
 }
@@ -110,7 +110,7 @@ function onCellClick(clickedBomb, infos) {
 function setFlag(clickedBomb) {
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
     if (!cell.classList.contains('revealed')) {
-        cell.innerHTML = '<img class="bombImage" src="./images/flag.png" alt="" />';
+        cell.innerHTML = '<img class="bomb" src="./images/flag.png" alt="" />';
     }
 }
 
