@@ -50,9 +50,8 @@ function generateGame() {
         return;
     }
 
-    document.getElementById("form").style.display = "none";
-    document.getElementById("infos").style.display = "flex";
-    document.getElementById("grid").style.display = "flex";
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("game").style.display = "block";
 
     const bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
 
