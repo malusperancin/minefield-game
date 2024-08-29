@@ -17,7 +17,7 @@ section {
     justify-content: center;
     align-items: center;
     width: fit-content;
-    margin: 8% auto;
+    margin: 6% auto;
 }
 
 header {
@@ -69,12 +69,4 @@ footer img {
     opacity: 0.3;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.register {
-    display: none;
-}
-
-.login {
-    display: flex;
 }
