@@ -9,7 +9,8 @@ button {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: 700;
 }
- /* HEADER */
+
+/* HEADER */
 
 header {
     width: 100%;
@@ -31,7 +32,6 @@ header .logout {
     border: none;
     padding: 8px;
     box-shadow: 0 0 15px rgb(224, 224, 224)
-
 }
 
 header .logout:hover {
@@ -45,7 +45,7 @@ header .logout:hover {
 section {
     font-size: 15px;
     display: flex;
-} 
+}
 
 .game {
     display: block;
@@ -92,7 +92,7 @@ section {
     color: white;
 }
 
-.form button:hover{
+.form button:hover {
     cursor: pointer;
     background-color: rgb(61, 154, 182);
 }
@@ -112,7 +112,8 @@ table.tableHistory {
     border-collapse: collapse;
 }
 
-table.tableHistory th, table.tableHistory td {
+table.tableHistory th,
+table.tableHistory td {
     border: 1px solid rgb(180, 180, 180);
     padding: 8px;
 }
@@ -186,7 +187,7 @@ table.tableHistory th {
     background-color: white;
 }
 
-.modal button:hover{
+.modal button:hover {
     cursor: pointer;
     background-color: rgb(221, 221, 221);
 }
@@ -217,13 +218,16 @@ nav .item .label {
     margin: 0;
 }
 
-nav .cheat, nav .quit {
+nav .cheat,
+nav .quit {
     border: none;
     justify-content: space-evenly;
     background-color: transparent;
 }
 
-nav .item .timerInfo, .dimensionInfo, .modeInfo {
+nav .item .timerInfo,
+.dimensionInfo,
+.modeInfo {
     margin: 0;
     font-weight: 600;
 }
@@ -240,5 +244,5 @@ nav .quit .flag {
     padding: 3px 13px;
     font-weight: 900;
     border-radius: 100px;
-    color:white;
+    color: white;
 }

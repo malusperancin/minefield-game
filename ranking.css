@@ -33,48 +33,44 @@ header img {
     margin-left: 10px;
 }
 
-section .options {
-    margin: 10px 0;
-    width: fit-content;
+.ranking {
+    margin: 0 auto;
+    margin-top: 50px;
 }
 
-section .options input {
-    width: 200px;
-    padding: 7px;
-    border-radius: 6px;
-    border: 1px solid black;
+table.tableRanking {
+    border-collapse: collapse;
+    text-align: center;
 }
 
-section button {
+table.tableRanking th,
+table.tableRanking td {
+    border: 1px solid rgb(180, 180, 180);
+    padding: 8px;
+}
+
+table.tableRanking tr:nth-child(even) {
+    background-color: rgb(215, 236, 255);
+}
+
+table.tableRanking th {
+    padding: 12px;
+    text-align: center;
+}
+
+.buttons {
+    margin-top: 10%;
+}
+
+.buttons button {
     background-color: rgb(63, 141, 165);
     border: none;
     border-radius: 5px;
-    padding: 10px;
-    width: 100%;
-    margin-top: 10px;
-    transition: all 0.3s ease-in-out;
+    padding: 12px 16px;
     color: white;
 }
 
-section button:hover {
+.buttons button:hover {
     cursor: pointer;
     background-color: rgb(61, 154, 182);
-}
-
-footer img {
-    height: min(70vh, 70vw);
-    position: absolute;
-    bottom: 0;
-    z-index: -1;
-    opacity: 0.3;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.register {
-    display: none;
-}
-
-.login {
-    display: flex;
 }
