@@ -11,7 +11,9 @@ button {
 }
 
 a {
+    font-weight: 700;
     text-decoration: none;
+    color: black;
 }
 
 /* HEADER */
@@ -35,7 +37,7 @@ header .logout {
     border-radius: 10px;
     border: none;
     padding: 8px;
-    box-shadow: 0 0 15px rgb(224, 224, 224)
+    box-shadow: 0 0 15px rgb(224, 224, 224);
 }
 
 header .logout:hover {
@@ -52,6 +54,7 @@ section {
 }
 
 .game {
+    font-size: 15px;
     display: block;
 }
 
@@ -85,7 +88,6 @@ section {
     display: block;
     margin: 0 auto;
     width: 20px;
-    height: 20x;
 }
 
 /* MODAL */

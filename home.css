@@ -10,6 +10,13 @@ button {
     font-weight: 700;
 }
 
+a {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 700;    
+    text-decoration: none;
+    color: black;
+}
+
 /* HEADER */
 
 header {
@@ -80,15 +87,15 @@ section {
     margin-top: 25px;
 }
 
-.form button {
+.form .button {
     background-color: rgb(63, 141, 165);
     border: none;
     border-radius: 5px;
-    padding: 12px 16px;
+    padding: 12px 14px;
     color: white;
 }
 
-.form button:hover {
+.form .button:hover {
     cursor: pointer;
     background-color: rgb(61, 154, 182);
 }
