@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="game.css">
+    <title>Home</title>
+</head>
+
+<body>
+    <header>
+        <h1>Minefield</h1>
+        <img src="https://cdn-icons-png.flaticon.com/512/486/486968.png" alt="bomba" />
+        <a href="login.html"> 
+            <button class="logout"> Trocar de Conta </button>
+        </a>
+    </header>
+    <section class="game" id="game">
+        <nav>
+            <div class="item">
+                <p class="label"> Tempo </p>
+                <p class="timerInfo"> 00:00 </p>
+            </div>
+            <div class="item">
+                <p class="label"> Dimensão </p>
+                <p class="dimensionInfo"> 30x30 </p>
+            </div>
+            <div class="item">
+                <p class="label"> Modo </p>
+                <p class="modeInfo"> Rivotril </p>
+            </div>
+            <button class="item cheat">
+                <p class="label"> Trapaça </p>
+                <span class="flag"> OFF </span>
+            </button>
+        </nav>
+        <div class="grid" id="grid">
+            <img src="./images/minefield.png" alt="Tabela"/>
+        </div>
+        <nav>
+            <a href="home.html">
+                <button class="item quit">
+                    <span class="flag"> Desistir </span>
+                </button>
+            </a>
+        </nav>
+    </section>
+    <section class="modal" id="modal">
+        <p> Você perdeu! </p>
+        <div class="options">
+            <a href="home.html">
+                <button>Tela inicial</button>
+            </a>
+            <button>Novo Jogo</button>
+        </div>
+    </section>
+</body>
+
+</html>
