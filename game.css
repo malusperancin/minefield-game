@@ -2,11 +2,13 @@
 body {
     margin: 0;
     background-color: #eef9ff;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif !important;
 }
 
 button {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
     font-weight: 700;
 }
 
@@ -44,7 +46,6 @@ header .logout:hover {
     background-color: rgb(238, 238, 238);
     cursor: pointer;
 }
-
 
 /* SECTIONS */
 
@@ -93,10 +94,12 @@ section {
 /* MODAL */
 
 .modal {
-    /* display: block;  */
+    /* display: block; */
     display: none;
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    padding: 20px;
+    transform: translate(-50%, -50%);
     background-color: rgb(63, 141, 165);
     position: absolute;
     z-index: 1;
@@ -105,7 +108,8 @@ section {
     color: white;
 }
 
-.modal button {
+.modal button,
+.modal a {
     border: none;
     border-radius: 5px;
     padding: 10px;
@@ -113,7 +117,8 @@ section {
     background-color: white;
 }
 
-.modal button:hover {
+.modal button:hover,
+.modal a:hover {
     cursor: pointer;
     background-color: rgb(221, 221, 221);
 }
@@ -136,7 +141,6 @@ nav .item {
     justify-content: center;
     border-radius: 8px;
     margin: 10px;
-
 }
 
 nav .item .label {

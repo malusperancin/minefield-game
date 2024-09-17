@@ -2,17 +2,20 @@
 body {
     margin: 0;
     background-color: #eef9ff;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif !important;
 }
 
 button {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
     font-weight: 700;
 }
 
 a {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    font-weight: 700;    
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+    font-weight: 700;
     text-decoration: none;
     color: black;
 }
@@ -32,20 +35,21 @@ header img {
     margin-left: 25px;
 }
 
-header .logout {
+header .logout,
+header .edit {
     margin-left: 50px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
     border: none;
     padding: 8px;
-    box-shadow: 0 0 15px rgb(224, 224, 224)
+    box-shadow: 0 0 15px rgb(224, 224, 224);
 }
 
-header .logout:hover {
+header .logout:hover,
+header .edit:hover {
     background-color: rgb(238, 238, 238);
     cursor: pointer;
 }
-
 
 /* SECTIONS */
 
@@ -91,7 +95,7 @@ section {
     background-color: rgb(63, 141, 165);
     border: none;
     border-radius: 5px;
-    padding: 12px 14px;
+    padding: 12px 8px;
     color: white;
 }
 
