@@ -5,7 +5,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="auth.css" />
+    <link rel="stylesheet" type="text/css" href="../stylesheets/auth.css" />
+    <script src="../scripts/auth.js"></script>
     <title>Autenticação</title>
 </head>
 
@@ -15,7 +16,7 @@
         <img src="https://cdn-icons-png.flaticon.com/512/486/486968.png" alt="bomba" />
     </header>
     <section class="login" id="login">
-        <div>
+        <form onsubmit="return login()">
             <div class="options">
                 <label> Username </label>
                 <br />
@@ -26,8 +27,8 @@
                 <br />
                 <input type="password" name="password" id="password" />
             </div>
-            <button class="enterButton">Login</button>
-        </div>
+            <input type="submit" class="enterButton" value="Login" />
+        </form>
         <p class="registerText">
             Não possui Cadastro? Clique <a href="register.html">aqui</a> para se
             cadastrar
