@@ -169,16 +169,21 @@ table.tableHistory th {
 /* MODAL */
 
 .modal {
-    /* display: block;  */
     display: none;
     left: 50%;
-    transform: translateX(-50%);
+    top: 50%;
+    padding: 20px;
+    transform: translate(-50%, -50%);
     background-color: rgb(63, 141, 165);
     position: absolute;
     z-index: 1;
     text-align: center;
     border-radius: 5px;
     color: white;
+}
+
+.modal.active {
+    display: block; /* Torna visível quando ativo */
 }
 
 .modal button {

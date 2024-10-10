@@ -1,3 +1,14 @@
+const infos = {
+    linesNumber: 0,
+    columnsNumber: 0,
+    bombs: [],
+    plays: []
+};
+
+function redirectTo(location) {
+    window.location.href = `${location}.html`;
+}
+
 function generateBombs(bombsNumber, lines, columns) {
     const bombs = [];
 
@@ -53,19 +64,15 @@ function generateGame() {
     document.getElementById("inicio").style.display = "none";
     document.getElementById("game").style.display = "block";
 
-    const bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
-
-    const infos = {
-        linesNumber,
-        columnsNumber,
-        bombs,
-    };
+    infos.bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
+    infos.linesNumber = linesNumber;
+    infos.columnsNumber = columnsNumber;
 
     renderGrid(infos);
 }
 
 
-function renderGrid(infos) {
+function renderGrid() {
     document.addEventListener('contextmenu', event => event.preventDefault());
     const table = document.getElementById("table");
     table.innerHTML = '';
@@ -80,7 +87,7 @@ function renderGrid(infos) {
                     x: col,
                     y: lin,
                 }
-                return () => onCellClick(clickedBomb, infos);
+                return () => revealCell(clickedBomb, false);
             })(lin, col));
 
             newTd.addEventListener("contextmenu", ((lin, col) => {
@@ -97,11 +104,18 @@ function renderGrid(infos) {
 }
 
 
-function onCellClick(clickedBomb, infos) {
+function revealCell(clickedBomb, isAutomatic) {
     const { bombs, linesNumber, columnsNumber } = infos;
+
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
+
+    if(!infos.plays.includes(clickedBomb))
+        infos.plays.push(clickedBomb);
+
     if (hasBomb(clickedBomb, bombs)) 
-        cell.innerHTML = '<img class="bomb" src="./images/bomb.png" alt="" />';
+        if(isAutomatic)
+            cell.innerHTML = '<img class="bomb" src="../images/bomb.png" alt="" />';
+        else onLose();
     else
         verifySpace(clickedBomb.x, clickedBomb.y, bombs, columnsNumber, linesNumber);
 }
@@ -109,7 +123,7 @@ function onCellClick(clickedBomb, infos) {
 function setFlag(clickedBomb) {
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
     if (!cell.classList.contains('revealed')) {
-        cell.innerHTML = '<img class="bomb" src="./images/flag.png" alt="" />';
+        cell.innerHTML = '<img class="bomb" src="../images/flag.png" alt="" />';
     }
 }
 
@@ -152,10 +166,82 @@ function showNumber(x, y, number) {
     cell.innerHTML = number;
     cell.style.backgroundColor = 'gray';
 }
+function cheatMode() {
+    const { linesNumber, columnsNumber, plays } = infos;
+
+    showAll(); 
+
+    setTimeout(() => {
+        for (let x = 0; x < columnsNumber; x++) {
+            for (let y = 0; y < linesNumber; y++) {
+                const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
+                cell.innerHTML = '';
+                cell.style.backgroundColor = '';
+                cell.classList.remove('revealed');
+            }
+        }
+
+        plays.forEach((item) => {
+            revealCell(item, true);
+        });
+
+    }, 2000);
+}
+
+function onLose() {
+    showModal();
+    showAll();
+}
+
+function inicialPageScreen() {
+    closeModal();
+    redirectTo("home");
+}
+
+function newGame() {
+    closeModal();
+    generateGame();
+}
 
 
-// function finishGame() {
-//     showAllBombs();
-//     saveGame();
-//     showGameOverModal();
-// }
+function showModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.add('active');
+}
+
+function closeModal() {
+    const modal = document.getElementById('modal');
+    modal.classList.remove('active');
+}
+
+function showAll() {
+    const { bombs, linesNumber, columnsNumber } = infos;
+
+    bombs.forEach(bomb => {
+        const cell = document.querySelector(`td[data-x='${bomb.x}'][data-y='${bomb.y}']`);
+        cell.innerHTML = '<img class="bomb" src="../images/bomb.png" alt="" />';
+    });
+
+    for (let x = 0; x < columnsNumber; x++) {
+        for (let y = 0; y < linesNumber; y++) {
+            const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
+            if (!hasBomb({ x, y }, bombs)) {
+                let totalBombsCount = 0;
+
+                for (let i = x - 1; i <= x + 1; i++) {
+                    for (let j = y - 1; j <= y + 1; j++) {
+                        if ((i === x && j === y) || i < 0 || j < 0 || i >= columnsNumber || j >= linesNumber) continue;
+                        if (hasBomb({ x: i, y: j }, bombs)) {
+                            totalBombsCount++;
+                        }
+                    }
+                }
+
+                if (totalBombsCount > 0) {
+                    cell.innerHTML = totalBombsCount;
+                }
+                cell.style.backgroundColor = 'gray';
+            }
+        }
+    }
+}
