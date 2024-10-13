@@ -3,16 +3,18 @@ const MODES = {
     RIVOTRIL: 'Rivotril',
 }
 
-const infos = {
+const actualGame = {
     linesNumber: 0,
     columnsNumber: 0,
     bombs: [],
     plays: [],
     revealedCellsCount: 0,
     mode: MODES.NORMAL,
+    elapsedTime: "00:00"
 };
 
 var timerInterval = null;
+var stopWatchInterval = null;
 
 function redirectTo(location) {
     window.location.href = `${location}.html`;
@@ -43,8 +45,9 @@ function generateGame() {
 
     const selectedMode = document.querySelector('input[name="gameMode"]:checked');
 
-    infos.plays = [];
-    infos.revealedCellsCount = 0;
+    actualGame.plays = [];
+    actualGame.revealedCellsCount = 0;
+    actualGame.elapsedTime = "00:00";
 
     const existingError = document.getElementById("errorMessage");
     if (existingError) {
@@ -77,30 +80,29 @@ function generateGame() {
     document.getElementById("inicio").style.display = "none";
     document.getElementById("game").style.display = "block";
 
-    infos.bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
-    infos.linesNumber = linesNumber;
-    infos.columnsNumber = columnsNumber;
+    actualGame.bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
+    actualGame.linesNumber = linesNumber;
+    actualGame.columnsNumber = columnsNumber;
 
-    if (selectedMode.value === MODES.RIVOTRIL) { 
-        infos.mode = MODES.RIVOTRIL; 
+    if (selectedMode.value === MODES.RIVOTRIL) {
+        actualGame.mode = MODES.RIVOTRIL;
     }
-    else { 
-        infos.mode = MODES.NORMAL;
+    else {
+        actualGame.mode = MODES.NORMAL;
     }
 
     document.getElementById('dimensionInfo').textContent = `${linesNumber}x${columnsNumber}`;
-    document.getElementById('modeInfo').textContent = infos.mode;
+    document.getElementById('modeInfo').textContent = actualGame.mode;
 
-    if (infos.mode === MODES.RIVOTRIL) {
+    if (actualGame.mode === MODES.RIVOTRIL) {
         document.getElementById('timerInfo').textContent = convertTime(calculateTime());
         document.getElementById('timer').classList.add('active');
     }
     else {
-        console.log('nao entrou');
         document.getElementById('timer').classList.remove('active');
     }
 
-    renderGrid(infos);
+    renderGrid(actualGame);
 }
 
 
@@ -108,9 +110,9 @@ function renderGrid() {
     document.addEventListener('contextmenu', event => event.preventDefault());
     const table = document.getElementById("table");
     table.innerHTML = '';
-    for (let lin = 0; lin < infos.linesNumber; lin++) {
+    for (let lin = 0; lin < actualGame.linesNumber; lin++) {
         const newTr = document.createElement("tr");
-        for (let col = 0; col < infos.columnsNumber; col++) {
+        for (let col = 0; col < actualGame.columnsNumber; col++) {
             const newTd = document.createElement("td");
             newTd.setAttribute('data-x', col);
             newTd.setAttribute('data-y', lin);
@@ -137,15 +139,18 @@ function renderGrid() {
 
 
 function revealCell(clickedBomb, isAutomatic) {
-    const { bombs, linesNumber, columnsNumber, revealedCellsCount, mode } = infos;
+    const { bombs, linesNumber, columnsNumber, revealedCellsCount, mode } = actualGame;
 
-    if (revealedCellsCount === 0 && mode === MODES.RIVOTRIL) 
-        startTimer();
-    
+    if (revealedCellsCount === 0) {
+        startStopWatch();
+        if (mode === MODES.RIVOTRIL)
+            startTimer();
+    }
+
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
 
-    if (!infos.plays.includes(clickedBomb))
-        infos.plays.push(clickedBomb);
+    if (!actualGame.plays.includes(clickedBomb))
+        actualGame.plays.push(clickedBomb);
 
     if (hasBomb(clickedBomb, bombs))
         if (isAutomatic)
@@ -183,7 +188,7 @@ function verifySpace(x, y, bombs, xMax, yMax) {
 
     cell.classList.add('revealed');
     cell.style.backgroundColor = 'gray';
-    infos.revealedCellsCount++;
+    actualGame.revealedCellsCount++;
 
     if (totalBombsCount > 0) {
         showNumber(x, y, totalBombsCount);
@@ -205,7 +210,7 @@ function showNumber(x, y, number) {
     cell.style.backgroundColor = 'gray';
 }
 function cheatMode() {
-    const { linesNumber, columnsNumber, plays } = infos;
+    const { linesNumber, columnsNumber, plays } = actualGame;
     const flag = document.getElementById('cheatFlag');
 
     showAll();
@@ -235,9 +240,11 @@ function cheatMode() {
 
 function onLose() {
     showModal("Você perdeu!");
-    if (infos.mode === MODES.RIVOTRIL) {
+    if (actualGame.mode === MODES.RIVOTRIL) {
         clearInterval(timerInterval);
     }
+    clearInterval(stopWatchInterval);
+    console.log(actualGame.elapsedTime); // será utilizado para salvar histórico
     showAll();
 }
 
@@ -268,7 +275,7 @@ function closeModal() {
 }
 
 function showAll() {
-    const { bombs, linesNumber, columnsNumber } = infos;
+    const { bombs, linesNumber, columnsNumber } = actualGame;
 
     bombs.forEach(bomb => {
         const cell = document.querySelector(`td[data-x='${bomb.x}'][data-y='${bomb.y}']`);
@@ -300,12 +307,14 @@ function showAll() {
 }
 
 function verifyWin() {
-    const { linesNumber, columnsNumber, bombs, revealedCellsCount } = infos;
+    const { linesNumber, columnsNumber, bombs, revealedCellsCount, elapsedTime, mode } = actualGame;
 
     if (revealedCellsCount === (linesNumber * columnsNumber) - bombs.length) {
-        if (infos.mode === MODES.RIVOTRIL) {
+        if (mode === MODES.RIVOTRIL) {
             clearInterval(timerInterval);
         }
+        clearInterval(stopWatchInterval);
+        console.log(elapsedTime); // será utilizado para salvar histórico
         showModal("Você venceu!");
         showAll();
     }
@@ -315,11 +324,24 @@ function calculateTime() {
     const maxTime = 240;
     const minTime = 0;
 
-    const normalizedSize = (infos.columnsNumber * infos.linesNumber) / (30 * 30);
+    const normalizedSize = (actualGame.columnsNumber * actualGame.linesNumber) / (30 * 30);
 
     const time = minTime + Math.round(normalizedSize * (maxTime - minTime));
 
     return time;
+}
+
+function startStopWatch() {
+    let seconds = 0;
+    let minutes = 0;
+    stopWatchInterval = setInterval(() => {
+        seconds++;
+        if (seconds === 60) {
+            seconds = 0;
+            minutes++;
+        }
+        actualGame.elapsedTime = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    }, 1000)
 }
 
 function startTimer() {
