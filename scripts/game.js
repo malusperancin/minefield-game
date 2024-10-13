@@ -1,9 +1,18 @@
+const MODES = {
+    NORMAL: 'Normal',
+    RIVOTRIL: 'Rivotril',
+}
+
 const infos = {
     linesNumber: 0,
     columnsNumber: 0,
     bombs: [],
-    plays: []
+    plays: [],
+    revealedCellsCount: 0,
+    mode: MODES.NORMAL,
 };
+
+var timerInterval = null;
 
 function redirectTo(location) {
     window.location.href = `${location}.html`;
@@ -32,6 +41,11 @@ function generateGame() {
     const columnsNumber = document.getElementById("columns").value;
     const bombsNumber = document.getElementById("bombs").value;
 
+    const selectedMode = document.querySelector('input[name="gameMode"]:checked');
+
+    infos.plays = [];
+    infos.revealedCellsCount = 0;
+
     const existingError = document.getElementById("errorMessage");
     if (existingError) {
         existingError.remove();
@@ -47,16 +61,15 @@ function generateGame() {
         errorMessage = "Número de bombas inválido. Deve estar entre 1 e " + (linesNumber * columnsNumber) + ".";
     }
 
+    if (selectedMode === null)
+        errorMessage = "Selecione um modo de jogo";
+
     if (errorMessage) {
         const errorElement = document.createElement("div");
         errorElement.id = "errorMessage";
         errorElement.style.color = "red";
         errorElement.textContent = errorMessage;
         document.getElementById("form").appendChild(errorElement);
-
-        document.getElementById("lines").value = "";
-        document.getElementById("columns").value = "";
-        document.getElementById("bombs").value = "";
 
         return;
     }
@@ -67,6 +80,25 @@ function generateGame() {
     infos.bombs = generateBombs(bombsNumber, linesNumber, columnsNumber);
     infos.linesNumber = linesNumber;
     infos.columnsNumber = columnsNumber;
+
+    if (selectedMode.value === MODES.RIVOTRIL) { 
+        infos.mode = MODES.RIVOTRIL; 
+    }
+    else { 
+        infos.mode = MODES.NORMAL;
+    }
+
+    document.getElementById('dimensionInfo').textContent = `${linesNumber}x${columnsNumber}`;
+    document.getElementById('modeInfo').textContent = infos.mode;
+
+    if (infos.mode === MODES.RIVOTRIL) {
+        document.getElementById('timerInfo').textContent = convertTime(calculateTime());
+        document.getElementById('timer').classList.add('active');
+    }
+    else {
+        console.log('nao entrou');
+        document.getElementById('timer').classList.remove('active');
+    }
 
     renderGrid(infos);
 }
@@ -105,15 +137,18 @@ function renderGrid() {
 
 
 function revealCell(clickedBomb, isAutomatic) {
-    const { bombs, linesNumber, columnsNumber } = infos;
+    const { bombs, linesNumber, columnsNumber, revealedCellsCount, mode } = infos;
 
+    if (revealedCellsCount === 0 && mode === MODES.RIVOTRIL) 
+        startTimer();
+    
     const cell = document.querySelector(`td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`);
 
-    if(!infos.plays.includes(clickedBomb))
+    if (!infos.plays.includes(clickedBomb))
         infos.plays.push(clickedBomb);
 
-    if (hasBomb(clickedBomb, bombs)) 
-        if(isAutomatic)
+    if (hasBomb(clickedBomb, bombs))
+        if (isAutomatic)
             cell.innerHTML = '<img class="bomb" src="../images/bomb.png" alt="" />';
         else onLose();
     else
@@ -148,6 +183,7 @@ function verifySpace(x, y, bombs, xMax, yMax) {
 
     cell.classList.add('revealed');
     cell.style.backgroundColor = 'gray';
+    infos.revealedCellsCount++;
 
     if (totalBombsCount > 0) {
         showNumber(x, y, totalBombsCount);
@@ -159,6 +195,8 @@ function verifySpace(x, y, bombs, xMax, yMax) {
             }
         }
     }
+
+    verifyWin();
 }
 
 function showNumber(x, y, number) {
@@ -168,8 +206,12 @@ function showNumber(x, y, number) {
 }
 function cheatMode() {
     const { linesNumber, columnsNumber, plays } = infos;
+    const flag = document.getElementById('cheatFlag');
 
-    showAll(); 
+    showAll();
+
+    flag.textContent = 'ON';
+    flag.style.backgroundColor = 'green';
 
     setTimeout(() => {
         for (let x = 0; x < columnsNumber; x++) {
@@ -185,11 +227,17 @@ function cheatMode() {
             revealCell(item, true);
         });
 
+        flag.textContent = 'OFF';
+        flag.style.backgroundColor = "rgb(207, 51, 51)";
+
     }, 2000);
 }
 
 function onLose() {
-    showModal();
+    showModal("Você perdeu!");
+    if (infos.mode === MODES.RIVOTRIL) {
+        clearInterval(timerInterval);
+    }
     showAll();
 }
 
@@ -204,14 +252,19 @@ function newGame() {
 }
 
 
-function showModal() {
+function showModal(text) {
     const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
+    document.getElementById('modalText').textContent = text;
     modal.classList.add('active');
+    overlay.style.display = 'block';
 }
 
 function closeModal() {
     const modal = document.getElementById('modal');
+    const overlay = document.getElementById('overlay');
     modal.classList.remove('active');
+    overlay.style.display = 'none'; // Oculta o overlay
 }
 
 function showAll() {
@@ -244,4 +297,55 @@ function showAll() {
             }
         }
     }
+}
+
+function verifyWin() {
+    const { linesNumber, columnsNumber, bombs, revealedCellsCount } = infos;
+
+    if (revealedCellsCount === (linesNumber * columnsNumber) - bombs.length) {
+        if (infos.mode === MODES.RIVOTRIL) {
+            clearInterval(timerInterval);
+        }
+        showModal("Você venceu!");
+        showAll();
+    }
+}
+
+function calculateTime() {
+    const maxTime = 240;
+    const minTime = 0;
+
+    const normalizedSize = (infos.columnsNumber * infos.linesNumber) / (30 * 30);
+
+    const time = minTime + Math.round(normalizedSize * (maxTime - minTime));
+
+    return time;
+}
+
+function startTimer() {
+    const totalSeconds = calculateTime();
+
+    let seconds = totalSeconds % 60;
+    let minutes = Math.floor(totalSeconds / 60);
+    const timer = document.getElementById('timerInfo');
+
+    timerInterval = setInterval(() => {
+        if (seconds === 0) {
+            if (minutes === 0) {
+                onLose();
+                return;
+            }
+            seconds = 59;
+            minutes--;
+        } else {
+            seconds--;
+        }
+        timer.textContent = `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    }, 1000);
+}
+
+function convertTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes < 10 ? '0' + minutes : minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
 }

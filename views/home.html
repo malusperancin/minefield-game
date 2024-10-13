@@ -34,13 +34,13 @@
                 <input type="number" name="bombs" id="bombs">
             </div>
             <div class="mode">
-                <label> Qual modo de jogo? </label>
+                <label>Qual modo de jogo?</label>
             </div>
             <div class="options">
-                <label> Normal </label>
-                <input type="radio" name="lines" id="lines">
-                <label> Rivotril </label>
-                <input type="radio" name="lines" id="lines">
+                <label for="normal">Normal</label>
+                <input type="radio" name="gameMode" id="normal" value="Normal">
+                <label for="rivotril">Rivotril</label>
+                <input type="radio" name="gameMode" id="rivotril" value="Rivotril">
             </div>
             <div class="options buttons">
                 <button onclick="generateGame()">Iniciar</button>
@@ -64,21 +64,21 @@
     </section>
     <section class="game" id="game">
         <nav>
-            <div class="item">
+            <div class="item timer" id="timer">
                 <p class="label"> Tempo </p>
-                <p class="timerInfo"> 00:00 </p>
+                <p class="timerInfo" id="timerInfo"> 00:00 </p>
             </div>
             <div class="item">
                 <p class="label"> Dimensão </p>
-                <p class="dimensionInfo"> 30x30 </p>
+                <p class="dimensionInfo" id="dimensionInfo"></p>
             </div>
             <div class="item">
                 <p class="label"> Modo </p>
-                <p class="modeInfo"> Rivotril </p>
+                <p class="modeInfo" id="modeInfo"> Rivotril </p>
             </div>
             <button class="item cheat" onclick="cheatMode()">
                 <p class="label"> Trapaça </p>
-                <span class="flag"> OFF </span>
+                <span class="flag" id="cheatFlag"> OFF </span>
             </button>
         </nav>
         <div class="grid" id="grid">
@@ -91,11 +91,12 @@
             </button>
         </nav>
     </section>
+    <div class="overlay" id="overlay"></div>
     <section class="modal" id="modal">
-        <p> Você perdeu! </p>
+        <p id="modalText"> Você perdeu! </p>
         <div class="options">
             <button onclick="inicialPageScreen()">Tela inicial</button>
-            <button onclick="newGame()">Novo Jogo</button>
+            <button onclick="newGame()">Jogar Novamente</button>
         </div>
     </section>
 </body>
