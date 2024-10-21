@@ -33,6 +33,10 @@ header img {
     margin-left: 10px;
 }
 
+section h2 {
+    margin-bottom: 0;
+}
+
 section .options {
     margin: 10px 0;
     width: fit-content;

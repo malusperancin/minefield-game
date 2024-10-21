@@ -15,7 +15,7 @@
 <body>
     <header>
         <h1>Minefield</h1>
-        <img src="https://cdn-icons-png.flaticon.com/512/486/486968.png" alt="bomba" />
+        <img src="https://cdn-icons-png.flaticon.com/512/486/486968.png" alt="bomba">
         <button class="logout" onclick="signOut()"> Trocar de Conta </button>
         <button class="edit" onclick="redirectTo('edit')"> Editar Conta </button>
     </header>
@@ -43,7 +43,7 @@
                 <input type="radio" name="gameMode" id="rivotril" value="Rivotril">
             </div>
             <div class="options buttons">
-                <input type="submit" value="Iniciar"></input>
+                <input type="submit" value="Iniciar">
                 <button onclick="redirectTo('ranking')">Ranking Global</button>
             </div>
         </form>
@@ -62,7 +62,7 @@
             </table>
         </div>
     </section>
-    <section class="game" id="game">
+    <div class="game" id="game">
         <nav>
             <div class="item timer" id="timer">
                 <p class="label"> Tempo </p>
@@ -77,7 +77,7 @@
                 <p class="modeInfo" id="modeInfo"> Rivotril </p>
             </div>
             <button class="item cheat" onclick="cheatMode()">
-                <p class="label"> Trapaça </p>
+                <span class="label"> Trapaça </span>
                 <span class="flag" id="cheatFlag"> OFF </span>
             </button>
         </nav>
@@ -90,15 +90,15 @@
                 <span class="flag"> Desistir </span>
             </button>
         </nav>
-    </section>
+    </div>
     <div class="overlay" id="overlay"></div>
-    <section class="modal" id="modal">
+    <div class="modal" id="modal">
         <p id="modalText"> Você perdeu! </p>
         <div class="options">
             <button onclick="inicialPageScreen()">Tela inicial</button>
             <button onclick="newGame()">Jogar Novamente</button>
         </div>
-    </section>
+    </div>
 </body>
 
 </html>
