@@ -115,6 +115,7 @@ function generateGame() {
     actualGame.flags = [];
     actualGame.startedPlaying = false;
     actualGame.cheatModeActive = false;
+    actualGame.elapsedTime = "00:00";
 
     if (selectedMode.value === MODES.RIVOTRIL) {
         actualGame.mode = MODES.RIVOTRIL;
@@ -158,11 +159,11 @@ function renderGrid() {
             newTd.addEventListener(
                 "contextmenu",
                 ((lin, col) => {
-                    const clickedCell = {
+                    const clickedBomb = {
                         x: col,
                         y: lin,
                     };
-                    return () => setFlag(clickedCell, false);
+                    return () => setFlag(clickedBomb, false);
                 })(lin, col)
             );
             newTr.appendChild(newTd);
@@ -172,14 +173,14 @@ function renderGrid() {
 }
 
 function handleOnClick(lin, col) {
-    const clickedCell = {
+    const clickedBomb = {
         x: col,
         y: lin,
     };
-    return () => revealCell(clickedCell, false);
+    return () => revealCell(clickedBomb, false);
 }
 
-function revealCell(clickedCell, isAutomatic) {
+function revealCell(clickedBomb, isAutomatic) {
     const {
         bombs,
         linesNumber,
@@ -202,15 +203,15 @@ function revealCell(clickedCell, isAutomatic) {
     }
 
     const cell = document.querySelector(
-        `td[data-x='${clickedCell.x}'][data-y='${clickedCell.y}']`
+        `td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`
     );
 
     if (
         !actualGame.plays.some(
-            (play) => play.x === clickedCell.x && play.y === clickedCell.y
+            (play) => play.x === clickedBomb.x && play.y === clickedBomb.y
         )
     ) {
-        actualGame.plays.push(clickedCell);
+        actualGame.plays.push(clickedBomb);
     }
 
     if (
@@ -220,7 +221,7 @@ function revealCell(clickedCell, isAutomatic) {
         return;
     }
 
-    if (hasBomb(clickedCell, bombs)) {
+    if (hasBomb(clickedBomb, bombs)) {
         if (isAutomatic) {
             cell.innerHTML =
                 '<img class="bomb" src="../images/bomb.png" alt="" />';
@@ -234,39 +235,37 @@ function revealCell(clickedCell, isAutomatic) {
     }
 
     verifySpace(
-        clickedCell.x,
-        clickedCell.y,
+        clickedBomb.x,
+        clickedBomb.y,
         bombs,
         columnsNumber,
         linesNumber
     );
 }
 
-function setFlag(clickedCell, isAutomatic) {
+function setFlag(clickedBomb, isAutomatic) {
     const cell = document.querySelector(
-        `td[data-x='${clickedCell.x}'][data-y='${clickedCell.y}']`
+        `td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`
     );
 
     if (cell.classList.contains("flag") && !isAutomatic) {
         cell.classList.remove("flag");
         cell.innerHTML = "";
         actualGame.flags = actualGame.flags.filter(
-            (flag) => !(flag.x === clickedCell.x && flag.y === clickedCell.y)
+            (flag) => !(flag.x === clickedBomb.x && flag.y === clickedBomb.y)
         );
     } else {
         cell.classList.add("flag");
-
         if (!cell.classList.contains("revealed")) {
             cell.innerHTML =
                 '<img class="bomb" src="../images/flag.png" alt="" />';
         }
-
         if (
             !actualGame.flags.some(
-                (flag) => flag.x === clickedCell.x && flag.y === clickedCell.y
+                (flag) => flag.x === clickedBomb.x && flag.y === clickedBomb.y
             )
         ) {
-            actualGame.flags.push(clickedCell);
+            actualGame.flags.push(clickedBomb);
         }
     }
 }
@@ -366,7 +365,6 @@ function cheatMode() {
         flags.forEach((flag) => {
             setFlag(flag, true);
         });
-
         actualGame.cheatModeActive = false;
 
         flag.textContent = "OFF";
@@ -489,15 +487,18 @@ function calculateTime() {
 function startStopWatch() {
     let seconds = 0;
     let minutes = 0;
+    const stopwatch = document.getElementById("stopwatchInfo");
     stopWatchInterval = setInterval(() => {
         seconds++;
         if (seconds === 60) {
             seconds = 0;
             minutes++;
         }
-        actualGame.elapsedTime = `${minutes < 10 ? "0" + minutes : minutes}:${
+        const result = `${minutes < 10 ? "0" + minutes : minutes}:${
             seconds < 10 ? "0" + seconds : seconds
         }`;
+        actualGame.elapsedTime = result;
+        stopwatch.textContent = result;
     }, 1000);
 }
 
