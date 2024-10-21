@@ -10,6 +10,7 @@ const actualGame = {
     plays: [],
     revealedCellsCount: 0,
     startedPlaying: false,
+    cheatModeActive: false,
     mode: MODES.NORMAL,
     elapsedTime: "00:00",
 };
@@ -111,6 +112,7 @@ function generateGame() {
     actualGame.revealedCellsCount = 0;
     actualGame.plays = [];
     actualGame.startedPlaying = false;
+    actualGame.cheatModeActive = false;
 
     if (selectedMode.value === MODES.RIVOTRIL) {
         actualGame.mode = MODES.RIVOTRIL;
@@ -182,8 +184,11 @@ function revealCell(clickedBomb, isAutomatic) {
         columnsNumber,
         revealedCellsCount,
         startedPlaying,
+        cheatModeActive,
         mode,
     } = actualGame;
+
+    if(cheatModeActive && !isAutomatic) return;
 
     if (!startedPlaying) {
         startStopWatch();
@@ -310,6 +315,7 @@ function cheatMode() {
     const { linesNumber, columnsNumber, plays } = actualGame;
     const flag = document.getElementById("cheatFlag");
 
+    actualGame.cheatModeActive = true;
     showAll();
 
     flag.textContent = "ON";
@@ -330,8 +336,8 @@ function cheatMode() {
         plays.forEach((item) => {
             revealCell(item, true);
         });
-        enableClick();
-
+        actualGame.cheatModeActive = false;
+        
         flag.textContent = "OFF";
         flag.style.backgroundColor = "rgb(207, 51, 51)";
     }, 2000);
@@ -374,8 +380,6 @@ function closeModal() {
 
 function showAll() {
     const { bombs, linesNumber, columnsNumber } = actualGame;
-
-    disableClick();
     actualGame.revealedCellsCount = 0;
 
     bombs.forEach((bomb) => {
@@ -416,26 +420,6 @@ function showAll() {
             }
         }
     }
-}
-
-function disableClick(){
-    const gridCells = document.querySelectorAll(".grid td");
-    gridCells.forEach((cell) => {
-        cell.removeEventListener("click", handleOnClick);
-    })
-}
-
-function enableClick(){
-    const gridCells = document.querySelectorAll(".grid td");
-    gridCells.forEach((cell) => {
-        const lin = cell.getAttribute("data-y");
-        const col = cell.getAttribute("data-x");
-
-        cell.addEventListener(
-            "click",
-            handleOnClick(lin, col)
-        );
-    });
 }
 
 function verifyWin() {
