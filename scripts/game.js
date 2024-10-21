@@ -8,6 +8,7 @@ const actualGame = {
     columnsNumber: 0,
     bombs: [],
     plays: [],
+    flags: [],
     revealedCellsCount: 0,
     startedPlaying: false,
     cheatModeActive: false,
@@ -111,6 +112,7 @@ function generateGame() {
     actualGame.columnsNumber = columnsNumber;
     actualGame.revealedCellsCount = 0;
     actualGame.plays = [];
+    actualGame.flags = [];
     actualGame.startedPlaying = false;
     actualGame.cheatModeActive = false;
 
@@ -156,11 +158,11 @@ function renderGrid() {
             newTd.addEventListener(
                 "contextmenu",
                 ((lin, col) => {
-                    const clickedBomb = {
+                    const clickedCell = {
                         x: col,
                         y: lin,
                     };
-                    return () => setFlag(clickedBomb);
+                    return () => setFlag(clickedCell, false);
                 })(lin, col)
             );
             newTr.appendChild(newTd);
@@ -169,15 +171,15 @@ function renderGrid() {
     }
 }
 
-function handleOnClick(lin, col){
-    const clickedBomb = {
+function handleOnClick(lin, col) {
+    const clickedCell = {
         x: col,
         y: lin,
     };
-    return () => revealCell(clickedBomb, false);
+    return () => revealCell(clickedCell, false);
 }
 
-function revealCell(clickedBomb, isAutomatic) {
+function revealCell(clickedCell, isAutomatic) {
     const {
         bombs,
         linesNumber,
@@ -188,7 +190,7 @@ function revealCell(clickedBomb, isAutomatic) {
         mode,
     } = actualGame;
 
-    if(cheatModeActive && !isAutomatic) return;
+    if (cheatModeActive && !isAutomatic) return;
 
     if (!startedPlaying) {
         startStopWatch();
@@ -200,22 +202,25 @@ function revealCell(clickedBomb, isAutomatic) {
     }
 
     const cell = document.querySelector(
-        `td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`
+        `td[data-x='${clickedCell.x}'][data-y='${clickedCell.y}']`
     );
 
     if (
         !actualGame.plays.some(
-            (play) => play.x === clickedBomb.x && play.y === clickedBomb.y
+            (play) => play.x === clickedCell.x && play.y === clickedCell.y
         )
     ) {
-        actualGame.plays.push(clickedBomb);
+        actualGame.plays.push(clickedCell);
     }
 
-    if (cell.classList.contains("revealed")) {
+    if (
+        cell.classList.contains("revealed") ||
+        cell.classList.contains("flag")
+    ) {
         return;
     }
 
-    if (hasBomb(clickedBomb, bombs)) {
+    if (hasBomb(clickedCell, bombs)) {
         if (isAutomatic) {
             cell.innerHTML =
                 '<img class="bomb" src="../images/bomb.png" alt="" />';
@@ -229,20 +234,40 @@ function revealCell(clickedBomb, isAutomatic) {
     }
 
     verifySpace(
-        clickedBomb.x,
-        clickedBomb.y,
+        clickedCell.x,
+        clickedCell.y,
         bombs,
         columnsNumber,
         linesNumber
     );
 }
 
-function setFlag(clickedBomb) {
+function setFlag(clickedCell, isAutomatic) {
     const cell = document.querySelector(
-        `td[data-x='${clickedBomb.x}'][data-y='${clickedBomb.y}']`
+        `td[data-x='${clickedCell.x}'][data-y='${clickedCell.y}']`
     );
-    if (!cell.classList.contains("revealed")) {
-        cell.innerHTML = '<img class="bomb" src="../images/flag.png" alt="" />';
+
+    if (cell.classList.contains("flag") && !isAutomatic) {
+        cell.classList.remove("flag");
+        cell.innerHTML = "";
+        actualGame.flags = actualGame.flags.filter(
+            (flag) => !(flag.x === clickedCell.x && flag.y === clickedCell.y)
+        );
+    } else {
+        cell.classList.add("flag");
+
+        if (!cell.classList.contains("revealed")) {
+            cell.innerHTML =
+                '<img class="bomb" src="../images/flag.png" alt="" />';
+        }
+
+        if (
+            !actualGame.flags.some(
+                (flag) => flag.x === clickedCell.x && flag.y === clickedCell.y
+            )
+        ) {
+            actualGame.flags.push(clickedCell);
+        }
     }
 }
 
@@ -279,6 +304,7 @@ function verifySpace(x, y, bombs, xMax, yMax) {
 
     const cell = document.querySelector(`td[data-x='${x}'][data-y='${y}']`);
     if (cell.classList.contains("revealed")) return;
+    if (cell.classList.contains("flag")) return;
 
     cell.classList.add("revealed");
     cell.style.backgroundColor = "gray";
@@ -312,7 +338,7 @@ function showNumber(x, y, number) {
 }
 
 function cheatMode() {
-    const { linesNumber, columnsNumber, plays } = actualGame;
+    const { linesNumber, columnsNumber, plays, flags } = actualGame;
     const flag = document.getElementById("cheatFlag");
 
     actualGame.cheatModeActive = true;
@@ -336,8 +362,13 @@ function cheatMode() {
         plays.forEach((item) => {
             revealCell(item, true);
         });
+
+        flags.forEach((flag) => {
+            setFlag(flag, true);
+        });
+
         actualGame.cheatModeActive = false;
-        
+
         flag.textContent = "OFF";
         flag.style.backgroundColor = "rgb(207, 51, 51)";
     }, 2000);
@@ -458,18 +489,15 @@ function calculateTime() {
 function startStopWatch() {
     let seconds = 0;
     let minutes = 0;
-    const stopwatch = document.getElementById("stopwatchInfo");
     stopWatchInterval = setInterval(() => {
         seconds++;
         if (seconds === 60) {
             seconds = 0;
             minutes++;
         }
-        const result = `${minutes < 10 ? "0" + minutes : minutes}:${
+        actualGame.elapsedTime = `${minutes < 10 ? "0" + minutes : minutes}:${
             seconds < 10 ? "0" + seconds : seconds
         }`;
-        actualGame.elapsedTime = result;
-        stopwatch.textContent = result;
     }, 1000);
 }
 
