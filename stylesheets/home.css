@@ -2,11 +2,13 @@
 body {
     margin: 0;
     background-color: #eef9ff;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif !important;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif !important;
 }
 
 button {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+        "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
     font-weight: 700;
 }
 
@@ -32,7 +34,7 @@ header .edit {
     border-radius: 10px;
     border: none;
     padding: 8px;
-    box-shadow: 0 0 15px rgb(224, 224, 224)
+    box-shadow: 0 0 15px rgb(224, 224, 224);
 }
 
 header .logout:hover,
@@ -40,7 +42,6 @@ header .edit:hover {
     background-color: rgb(238, 238, 238);
     cursor: pointer;
 }
-
 
 /* SECTIONS */
 
@@ -63,7 +64,7 @@ section {
 
 /* FORM */
 
-.form {
+.gameForm {
     margin: 0 auto;
     max-width: min-content;
 }
@@ -79,27 +80,30 @@ section {
     justify-content: space-around;
 }
 
-.form .mode {
+.gameForm .mode {
     margin: 10px 0;
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
 }
 
-.form button {
+.gameForm button,
+.gameForm input[type="submit"] {
     background-color: rgb(63, 141, 165);
     border: none;
     border-radius: 5px;
     padding: 12px 16px;
     color: white;
+    font-weight: 700;
 }
 
-.form button:hover {
+.gameForm button:hover,
+.gameForm input[type="submit"]:hover {
     cursor: pointer;
     background-color: rgb(61, 154, 182);
 }
 
-.form input {
+.gameForm input:not([type="submit"]) {
     width: 50px;
 }
 
@@ -175,6 +179,7 @@ table.tableHistory th {
     padding: 20px;
     transform: translate(-50%, -50%);
     background-color: rgb(63, 141, 165);
+    box-shadow: rgb(46, 103, 120) 0px 0px 20px ;
     position: absolute;
     z-index: 1;
     text-align: center;
@@ -217,7 +222,6 @@ nav .item {
     justify-content: center;
     border-radius: 8px;
     margin: 10px;
-
 }
 
 nav .item .label {
@@ -261,7 +265,6 @@ nav .timer.active {
 nav .timer {
     display: none;
 }
-
 
 .overlay {
     position: fixed;

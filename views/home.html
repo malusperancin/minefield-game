@@ -20,7 +20,7 @@
         <button class="edit" onclick="redirectTo('edit')"> Editar Conta </button>
     </header>
     <section class="inicio" id="inicio">
-        <div class="form" id="form">
+        <form class="gameForm" id="gameForm" onsubmit="return generateGame()">
             <div class="options">
                 <label> Quantas linhas? </label>
                 <input type="number" name="lines" id="lines">
@@ -43,10 +43,10 @@
                 <input type="radio" name="gameMode" id="rivotril" value="Rivotril">
             </div>
             <div class="options buttons">
-                <button onclick="generateGame()">Iniciar</button>
+                <input type="submit" value="Iniciar"></input>
                 <button onclick="redirectTo('ranking')">Ranking Global</button>
             </div>
-        </div>
+        </form>
         <div class="history">
             <h2>Meu Histórico</h2>
             <table class="tableHistory">
