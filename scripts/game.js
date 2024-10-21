@@ -133,7 +133,6 @@ function generateGame() {
     }
 
     renderGrid(actualGame);
-    console.log(actualGame.bombs);
     return false;
 }
 
@@ -378,7 +377,6 @@ function showAll() {
 
     disableClick();
     actualGame.revealedCellsCount = 0;
-    console.log("showAll", actualGame.revealedCellsCount);
 
     bombs.forEach((bomb) => {
         const cell = document.querySelector(
@@ -450,7 +448,6 @@ function verifyWin() {
         mode,
     } = actualGame;
 
-    console.log("win", revealedCellsCount);
     if (revealedCellsCount === linesNumber * columnsNumber - bombs.length) {
         if (mode === MODES.RIVOTRIL) {
             clearInterval(timerInterval);
