@@ -458,15 +458,18 @@ function calculateTime() {
 function startStopWatch() {
     let seconds = 0;
     let minutes = 0;
+    const stopwatch = document.getElementById("stopwatchInfo");
     stopWatchInterval = setInterval(() => {
         seconds++;
         if (seconds === 60) {
             seconds = 0;
             minutes++;
         }
-        actualGame.elapsedTime = `${minutes < 10 ? "0" + minutes : minutes}:${
+        const result = `${minutes < 10 ? "0" + minutes : minutes}:${
             seconds < 10 ? "0" + seconds : seconds
         }`;
+        actualGame.elapsedTime = result;
+        stopwatch.textContent = result;
     }, 1000);
 }
 
