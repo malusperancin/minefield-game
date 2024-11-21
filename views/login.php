@@ -31,7 +31,7 @@
             <input type="submit" class="enterButton" value="Login">
         </form>
         <p class="registerText">
-            Não possui Cadastro? Clique <a href="register.html">aqui</a> para se
+            Não possui Cadastro? Clique <a href="register.php">aqui</a> para se
             cadastrar
         </p>
     </section>

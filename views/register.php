@@ -56,7 +56,7 @@
             <input type="submit" value="Cadastrar">
         </form>
         <p class="loginText">
-            Já possui Cadastro? Clique <a href="login.html">aqui</a> para entrar
+            Já possui Cadastro? Clique <a href="login.php">aqui</a> para entrar
         </p>
     </section>
     <footer>

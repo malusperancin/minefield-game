@@ -1,5 +1,5 @@
 function redirectTo(location) {
-    window.location.href = `${location}.html`;
+    window.location.href = `${location}.php`;
 }
 
 let xhttp;

@@ -20,7 +20,7 @@ var timerInterval = null;
 var stopWatchInterval = null;
 
 function redirectTo(location) {
-    window.location.href = `${location}.html`;
+    window.location.href = `${location}.php`;
 }
 
 function generateBombs(bombsNumber, lines, columns) {

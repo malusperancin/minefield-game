@@ -1,38 +1,46 @@
 function redirectTo(location) {
-    window.location.href = `${location}.html`;
+    window.location.href = `${location}.php`;
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    setUserInfosByUsername();
-});
-
-function setUserInfosByUsername() {
-    const storedUser = localStorage.getItem("user");
-
-    // get no banco
-
-    document.getElementById("name").value = storedUser;
-    document.getElementById("phone").value = "19999000206";
-    document.getElementById("email").value = "teste@gmail.com";
-    document.getElementById("password").value = "*****";
-}
+let xhttp;
 
 function edit() {
-    const name = document.getElementById("name").value;
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    // put no banco
 
     if (validateEditData(phone, email)) {
-        redirectTo("home");
+        xhttp = new XMLHttpRequest();
+        if (!xhttp) {
+            console.log("Erro ao criar objeto xhttp");
+            return;
+        }
+
+        xhttp.onreadystatechange = authServer;
+        editData = new FormData(document.getElementById("editForm"));
+        xhttp.open("POST", "../backend/editUser.php");
+        xhttp.send(editData);
     }
 
     return false;
 }
 
-function validateEditData(phone, email) {
+function authServer() {
+    try {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            if (xhttp.status == 200) {
+                redirectTo("home");
+            } else if (xhttp.status == 400) {
+                generateAuthError(xhttp.responseText);
+            } else {
+                console.log(xhttp.responseText);
+            }
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function validateEditData(phone) {
     let regex = new RegExp("[0-9]{11}");
     if (regex.test(phone)) {
         return true;
@@ -40,8 +48,6 @@ function validateEditData(phone, email) {
         generateEditError("Telefone inválido");
         return false;
     }
-
-    // -- verificação de email em uso
 }
 
 function generateEditError(message) {
