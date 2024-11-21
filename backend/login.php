@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] = "POST") {
             echo "Ocorreu um erro ao fazer login: " . $e->getMessage();
         }
     } else {
-        http_response_code(403);
+        http_response_code(400);
         echo "Parametros inválidos";
     }
 }

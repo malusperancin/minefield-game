@@ -17,7 +17,7 @@
     </header>
     <section class="register" id="register">
         <h2>Registro</h2>
-        <form id="registerForm" onsubmit="return register()" action="../backend/registerUser.php" method="post">
+        <form id="registerForm" onsubmit="return register()">
             <div class="options">
                 <label> Nome completo </label>
                 <br>
@@ -46,7 +46,7 @@
             <div class="options">
                 <label> Username </label>
                 <br>
-                <input type="text" name="user" id="user" required>
+                <input type="text" name="username" id="user" required>
             </div>
             <div class="options">
                 <label> Senha </label>

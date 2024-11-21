@@ -1,9 +1,6 @@
 function redirectTo(location) {
-    window.location.href = `${location}.html`;
+    window.location.href = `${location}.php`;
 }
-
-let xhttp;
-
 document.addEventListener("DOMContentLoaded", function () {
     xhttp = new XMLHttpRequest();
 
@@ -22,8 +19,6 @@ function mountHistory() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
             if (xhttp.status == 200) {
                 const data = JSON.parse(xhttp.responseText);
-
-                console.log(data);
                 const table = document.querySelector(".tableHistory");
                 data.forEach((item) => {
                     const row = document.createElement("tr");

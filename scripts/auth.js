@@ -2,25 +2,51 @@ function redirectTo(location) {
     window.location.href = `${location}.html`;
 }
 
+let xhttp;
+
 function register() {
     const name = document.getElementById("name").value;
-    const birthday = new Date(document.getElementById("birthday").value);
+    const birthdate = new Date(document.getElementById("birthdate").value);
     const cpf = document.getElementById("cpf").value;
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
     const user = document.getElementById("user").value;
     const password = document.getElementById("password").value;
 
-    // COLOCA INFORMAÇÕES NO BD
-
-    if (validateRegisterForm(birthday, cpf, phone, email, user)) {
-        redirectTo("login");
+    if (validateRegisterForm(birthdate, cpf, phone)) {
+        xhttp = new XMLHttpRequest();
+        if (!xhttp) {
+            console.log("Erro ao criar objeto xhttp");
+            return;
+        }
+        const registerData = new FormData(
+            document.getElementById("registerForm")
+        );
+        xhttp.onreadystatechange = authServer;
+        xhttp.open("POST", "../backend/registerUser.php");
+        xhttp.send(registerData);
     }
 
     return false;
 }
 
-function validateRegisterForm(birthday, cpf, phone, email, user) {
+function authServer() {
+    try {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            if (xhttp.status == 200) {
+                redirectTo("home");
+            } else if (xhttp.status == 400) {
+                generateAuthError(xhttp.responseText);
+            } else {
+                console.log(xhttp.responseText);
+            }
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+function validateRegisterForm(birthdate, cpf, phone) {
     let errorMessage = "";
     const cpfRegex = new RegExp(
         "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$|^\\d{11}$"
@@ -28,7 +54,7 @@ function validateRegisterForm(birthday, cpf, phone, email, user) {
     const phoneRegex = new RegExp("[0-9]{11}");
 
     const today = new Date();
-    if (birthday > today) {
+    if (birthdate > today) {
         errorMessage = "Data de nascimento inválida";
     } else if (!cpfRegex.test(cpf)) {
         errorMessage = "CPF inválido";
@@ -40,8 +66,6 @@ function validateRegisterForm(birthday, cpf, phone, email, user) {
         generateAuthError(errorMessage);
         return false;
     }
-
-    // -- ainda precisa verificar se email e user nao estão em uso
 
     return true;
 }

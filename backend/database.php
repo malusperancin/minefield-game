@@ -9,7 +9,7 @@ try {
     $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pwd);
 
     $usuario =
-        "CREATE TABLE usuario(
+        "CREATE TABLE IF NOT EXISTS usuario(
 	    username varchar(20) NOT NULL,
         nome varchar(50) NOT NULL,
         nascimento date NOT NULL,
@@ -23,7 +23,7 @@ try {
     $conn->exec($usuario);
 
     $partida =
-        "CREATE TABLE partida(
+        "CREATE TABLE IF NOT EXISTS partida(
         codigo int NOT NULL AUTO_INCREMENT,
         linhas int NOT NULL,
         colunas int NOT NULL,
@@ -36,7 +36,7 @@ try {
         PRIMARY KEY(codigo),
         FOREIGN KEY(username) REFERENCES usuario(username)
     );
-    CREATE INDEX idx_partida_user ON partida(username);";
+    CREATE INDEX IF NOT EXISTS idx_partida_user ON partida(username);";
 
     $conn->exec($partida);
 
@@ -45,7 +45,7 @@ try {
         AS
         SELECT * FROM partida
         WHERE resultado = 1
-        ORDER BY (linhas*colunas), bombas, tempo DESC
+        ORDER BY (linhas*colunas) DESC, bombas DESC, tempo DESC
         LIMIT 10";
 
     $conn->exec($view_ranking);
