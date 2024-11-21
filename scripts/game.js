@@ -3,6 +3,11 @@ const MODES = {
     RIVOTRIL: "Rivotril",
 };
 
+const RESULTS = {
+    VICTORY: 1,
+    DEFEAT: 0,
+};
+
 const actualGame = {
     linesNumber: 0,
     columnsNumber: 0,
@@ -13,7 +18,7 @@ const actualGame = {
     startedPlaying: false,
     cheatModeActive: false,
     mode: MODES.NORMAL,
-    elapsedTime: "00:00",
+    elapsedTime: 0,
 };
 
 var timerInterval = null;
@@ -115,7 +120,7 @@ function generateGame() {
     actualGame.flags = [];
     actualGame.startedPlaying = false;
     actualGame.cheatModeActive = false;
-    actualGame.elapsedTime = "00:00";
+    actualGame.elapsedTime = 0;
 
     if (selectedMode.value === MODES.RIVOTRIL) {
         actualGame.mode = MODES.RIVOTRIL;
@@ -373,12 +378,11 @@ function cheatMode() {
 }
 
 function onLose() {
-    showModal("Você perdeu!");
+    endGame(RESULTS.DEFEAT);
     if (actualGame.mode === MODES.RIVOTRIL) {
         clearInterval(timerInterval);
     }
     clearInterval(stopWatchInterval);
-    console.log(actualGame.elapsedTime); // será utilizado para salvar histórico
     showAll();
 }
 
@@ -392,7 +396,35 @@ function newGame() {
     generateGame();
 }
 
-function showModal(text) {
+let gameXHTTP;
+
+function endGame(result) {
+    showModal(result);
+    gameXHTTP = new XMLHttpRequest();
+    if (!gameXHTTP) {
+        console.log("Erro ao criar objeto xhttp");
+        return;
+    }
+    const today = new Date();
+
+    let matchData = new FormData();
+    matchData.append("lines", actualGame.linesNumber);
+    matchData.append("columns", actualGame.columnsNumber);
+    matchData.append("bombs", actualGame.bombs.length);
+    matchData.append("mode", actualGame.mode === MODES.NORMAL ? 0 : 1);
+    matchData.append("time", actualGame.elapsedTime);
+    matchData.append("result", result);
+    matchData.append(
+        "datetime",
+        today.toISOString().slice(0, 19).replace("T", " ")
+    );
+
+    gameXHTTP.open("POST", "../backend/addMatch.php");
+    gameXHTTP.send(matchData);
+}
+
+function showModal(result) {
+    const text = result === RESULTS.VICTORY ? "Você venceu!" : "Você perdeu!";
     const modal = document.getElementById("modal");
     const overlay = document.getElementById("overlay");
     document.getElementById("modalText").textContent = text;
@@ -466,8 +498,7 @@ function verifyWin() {
             clearInterval(timerInterval);
         }
         clearInterval(stopWatchInterval);
-        console.log(elapsedTime); // será utilizado para salvar histórico
-        showModal("Você venceu!");
+        endGame(RESULTS.VICTORY);
         showAll();
     }
 }
@@ -497,7 +528,7 @@ function startStopWatch() {
         const result = `${minutes < 10 ? "0" + minutes : minutes}:${
             seconds < 10 ? "0" + seconds : seconds
         }`;
-        actualGame.elapsedTime = result;
+        actualGame.elapsedTime = seconds + minutes * 60;
         stopwatch.textContent = result;
     }, 1000);
 }
