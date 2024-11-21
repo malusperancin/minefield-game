@@ -64,13 +64,6 @@ function generateAuthError(message) {
 function login() {
     const user = document.getElementById("user").value;
     const password = document.getElementById("password").value;
-
-    // ---- verifica se esta certo no BD ----
-
-    // se sim:
-    localStorage.setItem("user", user); // nao sei se vamos vir a precisar de mais coisas do usuario nesse momento. a principio só o user serve
-
-    redirectTo("home");
     return false;
 }
 

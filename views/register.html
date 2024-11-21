@@ -17,7 +17,7 @@
     </header>
     <section class="register" id="register">
         <h2>Registro</h2>
-        <form id="registerForm" onsubmit="return register()">
+        <form id="registerForm" onsubmit="return register()" action="../backend/registerUser.php" method="post">
             <div class="options">
                 <label> Nome completo </label>
                 <br>
@@ -26,7 +26,7 @@
             <div class="options">
                 <label> Nascimento </label>
                 <br>
-                <input type="date" name="birthday" id="birthday" required>
+                <input type="date" name="birthdate" id="birthdate" required>
             </div>
             <div class="options">
                 <label> CPF </label>
