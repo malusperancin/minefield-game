@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION["username"]) && $_SESSION["loggedIn"] == true) {
+    header("Location: home.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 

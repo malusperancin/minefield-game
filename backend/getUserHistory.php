@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_SESSION["username"])) {
         $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
 
         $username = $_SESSION["username"];
-        $stmt = $conn->query("SELECT * FROM partida WHERE username = '$username'");
+        $stmt = $conn->query("SELECT * FROM partida WHERE username = '$username' ORDER BY datahora DESC");
 
         $playerMatches = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

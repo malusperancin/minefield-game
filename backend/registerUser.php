@@ -5,7 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $username = $_POST["username"];
         $name = $_POST["name"];
         $birthdate = $_POST["birthdate"];
-        $cpf = $_POST["cpf"];
+        $cpf = preg_replace("/[^0-9]/", "", $_POST["cpf"]);
         $tel = $_POST["phone"];
         $email = $_POST["email"];
         $password = $_POST["password"];
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt = $conn->query("SELECT * FROM usuario WHERE username = '$username'");
         $registerUser = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($registerUser) {
-            http_response_code(400);
+            http_response_code(409);
             echo "Username em uso";
             exit();
         }

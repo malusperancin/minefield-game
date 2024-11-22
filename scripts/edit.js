@@ -29,7 +29,7 @@ function authServer() {
         if (xhttp.readyState == XMLHttpRequest.DONE) {
             if (xhttp.status == 200) {
                 redirectTo("home");
-            } else if (xhttp.status == 400) {
+            } else if (xhttp.status == 401) {
                 generateAuthError(xhttp.responseText);
             } else {
                 console.log(xhttp.responseText);

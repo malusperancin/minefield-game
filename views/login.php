@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION["username"]) && $_SESSION["loggedIn"] == true) {
+    header("Location: home.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,7 +24,7 @@
     </header>
     <section class="login" id="login">
         <h2>Login</h2>
-        <form action="../backend/login.php" method="post">
+        <form id="loginForm" onsubmit="login(event)">
             <div class="options">
                 <label> Username </label>
                 <br>

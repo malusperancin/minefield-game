@@ -5,13 +5,9 @@ function redirectTo(location) {
 let xhttp;
 
 function register() {
-    const name = document.getElementById("name").value;
     const birthdate = new Date(document.getElementById("birthdate").value);
     const cpf = document.getElementById("cpf").value;
     const phone = document.getElementById("phone").value;
-    const email = document.getElementById("email").value;
-    const user = document.getElementById("user").value;
-    const password = document.getElementById("password").value;
 
     if (validateRegisterForm(birthdate, cpf, phone)) {
         xhttp = new XMLHttpRequest();
@@ -28,22 +24,6 @@ function register() {
     }
 
     return false;
-}
-
-function authServer() {
-    try {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
-                redirectTo("home");
-            } else if (xhttp.status == 400) {
-                generateAuthError(xhttp.responseText);
-            } else {
-                console.log(xhttp.responseText);
-            }
-        }
-    } catch (e) {
-        console.log(e);
-    }
 }
 
 function validateRegisterForm(birthdate, cpf, phone) {
@@ -70,6 +50,31 @@ function validateRegisterForm(birthdate, cpf, phone) {
     return true;
 }
 
+function login(e) {
+    e.preventDefault();
+    xhttp = new XMLHttpRequest();
+    if (!xhttp) {
+        console.log("Erro ao criar objeto xhttp");
+        return;
+    }
+    const loginData = new FormData(document.getElementById("loginForm"));
+    xhttp.onreadystatechange = authServer;
+    xhttp.open("POST", "../backend/loginUser.php");
+    xhttp.send(loginData);
+    return false;
+}
+
+function signOut() {
+    xhttp = new XMLHttpRequest();
+    if (!xhttp) {
+        console.log("Erro ao criar objeto xhttp");
+        return;
+    }
+    xhttp.open("POST", "../backend/logout.php");
+    xhttp.send();
+    location.reload();
+}
+
 function generateAuthError(message) {
     const existingError = document.getElementById("errorMessage");
 
@@ -82,17 +87,29 @@ function generateAuthError(message) {
     errorElement.style.color = "red";
     errorElement.style.textAlign = "center";
     errorElement.textContent = message;
-    document.getElementById("registerForm").appendChild(errorElement);
+
+    const registerForm = document.getElementById("registerForm");
+    const loginForm = document.getElementById("loginForm");
+
+    if (registerForm) {
+        registerForm.appendChild(errorElement);
+    } else if (loginForm) {
+        loginForm.appendChild(errorElement);
+    }
 }
 
-function login() {
-    const user = document.getElementById("user").value;
-    const password = document.getElementById("password").value;
-    return false;
-}
-
-function signOut() {
-    localStorage.setItem("user", "");
-
-    redirectTo("login");
+function authServer() {
+    try {
+        if (xhttp.readyState == XMLHttpRequest.DONE) {
+            if (xhttp.status == 200) {
+                redirectTo("home");
+            } else if (xhttp.status == 401 || xhttp.status == 409) {
+                generateAuthError(xhttp.responseText);
+            } else {
+                console.log(xhttp.responseText);
+            }
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }

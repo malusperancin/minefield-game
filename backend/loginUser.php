@@ -24,7 +24,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 header("Location: ../views/home.php");
             } else {
-                echo "Usuário ou senha incorreto";
+                http_response_code(401);
+                echo "Usuário ou senha incorretos";
                 exit();
             }
         } catch (Exception $e) {
