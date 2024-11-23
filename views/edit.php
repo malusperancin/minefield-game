@@ -4,11 +4,7 @@ if (!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] === false || !isset($
     header("Location: login.php");
 } else {
     try {
-        $host = "localhost";
-        $dbname = "minefield";
-        $dbuser = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
+        require "../backend/connectToDatabase.php";
 
         $username = $_SESSION["username"];
 

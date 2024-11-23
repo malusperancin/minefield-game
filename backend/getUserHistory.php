@@ -2,11 +2,7 @@
 session_start();
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_SESSION["username"])) {
     try {
-        $host = "localhost";
-        $dbname = "minefield";
-        $dbuser = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
+        require "connectToDatabase.php";
 
         $username = $_SESSION["username"];
         $stmt = $conn->query("SELECT * FROM partida WHERE username = '$username' ORDER BY datahora DESC");

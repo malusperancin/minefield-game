@@ -11,11 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION["username"])) {
         $datetime = $_POST["datetime"];
         $username = $_SESSION["username"];
 
-        $host = "localhost";
-        $dbname = "minefield";
-        $user = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pwd);
+        require "connectToDatabase.php";
 
         $sql = "INSERT INTO partida(linhas, colunas, bombas, modalidade, tempo, resultado, datahora, username) 
         VALUES ($lines, $columns, $bombs, $mode, $time, $result, '$datetime', '$username')";

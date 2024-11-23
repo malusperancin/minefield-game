@@ -8,11 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION["username"])) {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        $host = "localhost";
-        $dbname = "minefield";
-        $dbuser = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
+        require "connectToDatabase.php";
 
         $sql = "UPDATE usuario
         SET nome = '$name', tel = '$phone', email = '$email', pwd = '$password'

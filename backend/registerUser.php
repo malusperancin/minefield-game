@@ -10,11 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
-        $host = "localhost";
-        $dbname = "minefield";
-        $user = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pwd);
+        require "connectToDatabase.php";
 
         $stmt = $conn->query("SELECT * FROM usuario WHERE username = '$username'");
         $registerUser = $stmt->fetch(PDO::FETCH_ASSOC);

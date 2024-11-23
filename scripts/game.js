@@ -407,6 +407,16 @@ function endGame(result) {
     }
     const today = new Date();
 
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
+    const hours = String(today.getHours()).padStart(2, "0");
+    const minutes = String(today.getMinutes()).padStart(2, "0");
+    const seconds = String(today.getSeconds()).padStart(2, "0");
+
+    const localDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // formata de acordo com o SQL
+
+    console.log(localDateTime);
     let matchData = new FormData();
     matchData.append("lines", actualGame.linesNumber);
     matchData.append("columns", actualGame.columnsNumber);
@@ -414,10 +424,7 @@ function endGame(result) {
     matchData.append("mode", actualGame.mode === MODES.NORMAL ? 0 : 1);
     matchData.append("time", actualGame.elapsedTime);
     matchData.append("result", result);
-    matchData.append(
-        "datetime",
-        today.toISOString().slice(0, 19).replace("T", " ")
-    );
+    matchData.append("datetime", localDateTime);
 
     gameXHTTP.open("POST", "../backend/addMatch.php");
     gameXHTTP.send(matchData);

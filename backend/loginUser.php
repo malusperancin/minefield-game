@@ -6,11 +6,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $username = $_POST["user"];
             $password = $_POST["password"];
 
-            $host = "localhost";
-            $dbname = "minefield";
-            $dbuser = "root";
-            $pwd = "";
-            $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
+            require "connectToDatabase.php";
 
             $auth = $conn->query("SELECT * from 
                 usuario WHERE

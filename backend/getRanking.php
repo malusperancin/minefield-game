@@ -1,11 +1,7 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     try {
-        $host = "localhost";
-        $dbname = "minefield";
-        $dbuser = "root";
-        $pwd = "";
-        $conn = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $pwd);
+        require "connectToDatabase.php";
 
         $stmt = $conn->query("SELECT * FROM ranking_global");
 
