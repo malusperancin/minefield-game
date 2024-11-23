@@ -2,7 +2,7 @@ function redirectTo(location) {
     window.location.href = `${location}.php`;
 }
 
-let xhttp;
+let authXHTTP;
 
 function register() {
     const birthdate = new Date(document.getElementById("birthdate").value);
@@ -10,17 +10,17 @@ function register() {
     const phone = document.getElementById("phone").value;
 
     if (validateRegisterForm(birthdate, cpf, phone)) {
-        xhttp = new XMLHttpRequest();
-        if (!xhttp) {
+        authXHTTP = new XMLHttpRequest();
+        if (!authXHTTP) {
             console.log("Erro ao criar objeto xhttp");
             return;
         }
         const registerData = new FormData(
             document.getElementById("registerForm")
         );
-        xhttp.onreadystatechange = authServer;
-        xhttp.open("POST", "../backend/registerUser.php");
-        xhttp.send(registerData);
+        authXHTTP.onreadystatechange = authServer;
+        authXHTTP.open("POST", "../backend/registerUser.php");
+        authXHTTP.send(registerData);
     }
 
     return false;
@@ -52,26 +52,26 @@ function validateRegisterForm(birthdate, cpf, phone) {
 
 function login(e) {
     e.preventDefault();
-    xhttp = new XMLHttpRequest();
-    if (!xhttp) {
+    authXHTTP = new XMLHttpRequest();
+    if (!authXHTTP) {
         console.log("Erro ao criar objeto xhttp");
         return;
     }
     const loginData = new FormData(document.getElementById("loginForm"));
-    xhttp.onreadystatechange = authServer;
-    xhttp.open("POST", "../backend/loginUser.php");
-    xhttp.send(loginData);
+    authXHTTP.onreadystatechange = authServer;
+    authXHTTP.open("POST", "../backend/loginUser.php");
+    authXHTTP.send(loginData);
     return false;
 }
 
 function signOut() {
-    xhttp = new XMLHttpRequest();
-    if (!xhttp) {
+    authXHTTP = new XMLHttpRequest();
+    if (!authXHTTP) {
         console.log("Erro ao criar objeto xhttp");
         return;
     }
-    xhttp.open("POST", "../backend/logout.php");
-    xhttp.send();
+    authXHTTP.open("POST", "../backend/logout.php");
+    authXHTTP.send();
     location.reload();
 }
 
@@ -100,13 +100,13 @@ function generateAuthError(message) {
 
 function authServer() {
     try {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
+        if (authXHTTP.readyState == XMLHttpRequest.DONE) {
+            if (authXHTTP.status == 200) {
                 redirectTo("home");
-            } else if (xhttp.status == 401 || xhttp.status == 409) {
-                generateAuthError(xhttp.responseText);
+            } else if (authXHTTP.status == 401 || authXHTTP.status == 409) {
+                generateAuthError(authXHTTP.responseText);
             } else {
-                console.log(xhttp.responseText);
+                console.log(authXHTTP.responseText);
             }
         }
     } catch (e) {

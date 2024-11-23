@@ -2,23 +2,23 @@ function redirectTo(location) {
     window.location.href = `${location}.php`;
 }
 
-let xhttp;
+let editXHTTP;
 
 function edit() {
     const phone = document.getElementById("phone").value;
     const email = document.getElementById("email").value;
 
     if (validateEditData(phone, email)) {
-        xhttp = new XMLHttpRequest();
-        if (!xhttp) {
+        editXHTTP = new XMLHttpRequest();
+        if (!editXHTTP) {
             console.log("Erro ao criar objeto xhttp");
             return;
         }
 
-        xhttp.onreadystatechange = authServer;
+        editXHTTP.onreadystatechange = authServer;
         editData = new FormData(document.getElementById("editForm"));
-        xhttp.open("POST", "../backend/editUser.php");
-        xhttp.send(editData);
+        editXHTTP.open("POST", "../backend/editUser.php");
+        editXHTTP.send(editData);
     }
 
     return false;
@@ -26,13 +26,13 @@ function edit() {
 
 function authServer() {
     try {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
+        if (editXHTTP.readyState == XMLHttpRequest.DONE) {
+            if (editXHTTP.status == 200) {
                 redirectTo("home");
-            } else if (xhttp.status == 401) {
-                generateAuthError(xhttp.responseText);
+            } else if (editXHTTP.status == 401) {
+                generateAuthError(editXHTTP.responseText);
             } else {
-                console.log(xhttp.responseText);
+                console.log(editXHTTP.responseText);
             }
         }
     } catch (e) {

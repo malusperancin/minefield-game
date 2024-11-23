@@ -2,24 +2,24 @@ function redirectTo(location) {
     window.location.href = `${location}.php`;
 }
 
-let xhttp;
+let rankingXHTTP;
 
 document.addEventListener("DOMContentLoaded", function () {
-    xhttp = new XMLHttpRequest();
-    if (!xhttp) {
+    rankingXHTTP = new XMLHttpRequest();
+    if (!rankingXHTTP) {
         console.log("Erro ao criar objeto xhttp");
         return;
     }
-    xhttp.onreadystatechange = mountRanking;
-    xhttp.open("GET", "../backend/getRanking.php");
-    xhttp.send();
+    rankingXHTTP.onreadystatechange = mountRanking;
+    rankingXHTTP.open("GET", "../backend/getRanking.php");
+    rankingXHTTP.send();
 });
 
 function mountRanking() {
     try {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
-                const data = JSON.parse(xhttp.responseText);
+        if (rankingXHTTP.readyState == XMLHttpRequest.DONE) {
+            if (rankingXHTTP.status == 200) {
+                const data = JSON.parse(rankingXHTTP.responseText);
                 console.log(data);
                 const table = document.querySelector(".tableRanking");
 
@@ -51,7 +51,7 @@ function mountRanking() {
                     table.appendChild(row);
                 });
             } else {
-                console.log(xhttp.responseText);
+                console.log(rankingXHTTP.responseText);
             }
         }
     } catch (e) {

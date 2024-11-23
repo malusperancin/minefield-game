@@ -1,24 +1,27 @@
 function redirectTo(location) {
     window.location.href = `${location}.php`;
 }
-document.addEventListener("DOMContentLoaded", function () {
-    xhttp = new XMLHttpRequest();
 
-    if (!xhttp) {
+let homeXHTTP;
+
+document.addEventListener("DOMContentLoaded", function () {
+    homeXHTTP = new XMLHttpRequest();
+
+    if (!homeXHTTP) {
         console.log("Erro ao criar objeto xhttp");
         return;
     }
 
-    xhttp.onreadystatechange = mountHistory;
-    xhttp.open("GET", "../backend/getUserHistory.php");
-    xhttp.send();
+    homeXHTTP.onreadystatechange = mountHistory;
+    homeXHTTP.open("GET", "../backend/getUserHistory.php");
+    homeXHTTP.send();
 });
 
 function mountHistory() {
     try {
-        if (xhttp.readyState == XMLHttpRequest.DONE) {
-            if (xhttp.status == 200) {
-                const data = JSON.parse(xhttp.responseText);
+        if (homeXHTTP.readyState == XMLHttpRequest.DONE) {
+            if (homeXHTTP.status == 200) {
+                const data = JSON.parse(homeXHTTP.responseText);
                 const table = document.querySelector(".tableHistory");
                 data.forEach((item) => {
                     const row = document.createElement("tr");
@@ -47,7 +50,7 @@ function mountHistory() {
                     table.appendChild(row);
                 });
             } else {
-                console.log(xhttp.responseText);
+                console.log(homeXHTTP.responseText);
             }
         }
     } catch (e) {
