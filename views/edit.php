@@ -1,8 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION["loggedIn"]) || $_SESSION["loggedIn"] === false || !isset($_SESSION["username"])) {
-    header("Location: login.php");
-} else {
+require "../backend/authenticate.php";
+if (isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] === true) {
     try {
         require "../backend/connectToDatabase.php";
 
