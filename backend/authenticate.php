@@ -16,9 +16,9 @@ if (isset($_SESSION["username"]) && isset($_SESSION["password"])) {
             $_SESSION["loggedIn"] = true;
         }
     } catch (Exception $e) {
-        header("Location: login.php");
+        header("Location: ../views/login.php");
     }
 }
 if ($_SESSION["loggedIn"] === false) {
-    header("Location: login.php");
+    header("Location: ../views/login.php");
 }
