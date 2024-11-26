@@ -10,6 +10,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $email = $_POST["email"];
         $password = $_POST["password"];
 
+        if (empty($username) || empty($name) || empty($birthdate) || empty($cpf) || empty($tel) || empty($email) || empty($password)) {
+            http_response_code(400);
+            echo "Parâmetros inválidos";
+            exit();
+        }
+
         require "connectToDatabase.php";
 
         $stmt = $conn->query("SELECT * FROM usuario WHERE username = '$username'");

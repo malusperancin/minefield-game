@@ -16,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($user) {
                 $_SESSION["username"] = $username;
-                $_SESSION["password"] = $password;
                 $_SESSION["loggedIn"] = true;
 
                 header("Location: ../views/home.php");
