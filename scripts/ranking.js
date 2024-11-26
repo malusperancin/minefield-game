@@ -17,39 +17,52 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function mountRanking() {
     try {
-        if (rankingXHTTP.readyState == XMLHttpRequest.DONE) {
-            if (rankingXHTTP.status == 200) {
+        if (rankingXHTTP.readyState === XMLHttpRequest.DONE) {
+            if (rankingXHTTP.status === 200) {
                 const data = JSON.parse(rankingXHTTP.responseText);
                 console.log(data);
-                const table = document.querySelector(".tableRanking");
+                if (data.length > 0) {
+                    const table = document.querySelector(".tableRanking");
 
-                data.forEach((item) => {
-                    const row = document.createElement("tr");
-                    const matchMode =
-                        item.modalidade === 0 ? "Normal" : "Rivotril";
-                    const matchResult =
-                        item.resultado === 0 ? "Derrota" : "Vitória";
+                    data.forEach((item) => {
+                        const row = document.createElement("tr");
+                        const matchMode =
+                            item.modalidade === 0 ? "Normal" : "Rivotril";
+                        const matchResult =
+                            item.resultado === 0 ? "Derrota" : "Vitória";
 
-                    const matchDate = new Date(
-                        item.datahora
-                    ).toLocaleDateString();
+                        const matchDate = new Date(
+                            item.datahora
+                        ).toLocaleDateString();
 
-                    const matchTime = new Date(
-                        item.datahora
-                    ).toLocaleTimeString();
+                        const matchTime = new Date(
+                            item.datahora
+                        ).toLocaleTimeString();
 
-                    row.innerHTML = `
-                        <td>${item.username}</td>
-                        <td>${item.linhas}x${item.colunas}</td>
-                        <td>${item.bombas}</td>
-                        <td>${matchMode}</td>
-                        <td>${formatTime(item.tempo)}</td>
-                        <td>${matchResult}</td>
-                        <td>${matchDate}</td>
-                        <td>${matchTime}</td>
-                    `;
-                    table.appendChild(row);
-                });
+                        row.innerHTML = `
+                            <td>${item.username}</td>
+                            <td>${item.linhas}x${item.colunas}</td>
+                            <td>${item.bombas}</td>
+                            <td>${matchMode}</td>
+                            <td>${formatTime(item.tempo)}</td>
+                            <td>${matchResult}</td>
+                            <td>${matchDate}</td>
+                            <td>${matchTime}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                } else {
+                    const rankingSection = document.querySelector(".ranking");
+                    rankingSection.removeChild(
+                        document.querySelector(".tableRanking")
+                    );
+                    const noRankingText = document.createElement("p");
+                    noRankingText.innerHTML = "Ranking indisponível";
+                    rankingSection.insertBefore(
+                        noRankingText,
+                        document.querySelector(".buttons")
+                    );
+                }
             } else {
                 console.log(rankingXHTTP.responseText);
             }

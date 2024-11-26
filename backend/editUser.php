@@ -15,6 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_SESSION["username"])) {
         WHERE username = '$username'";
 
         $conn->exec($sql);
+
+        $_SESSION["password"] = $password;
     } catch (Exception $e) {
         http_response_code(500);
         echo "Erro ao editar usuario";

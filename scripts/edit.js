@@ -26,10 +26,10 @@ function edit() {
 
 function authServer() {
     try {
-        if (editXHTTP.readyState == XMLHttpRequest.DONE) {
-            if (editXHTTP.status == 200) {
+        if (editXHTTP.readyState === XMLHttpRequest.DONE) {
+            if (editXHTTP.status === 200) {
                 redirectTo("home");
-            } else if (editXHTTP.status == 401) {
+            } else if (editXHTTP.status === 401) {
                 generateAuthError(editXHTTP.responseText);
             } else {
                 console.log(editXHTTP.responseText);

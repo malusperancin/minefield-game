@@ -19,36 +19,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function mountHistory() {
     try {
-        if (homeXHTTP.readyState == XMLHttpRequest.DONE) {
-            if (homeXHTTP.status == 200) {
+        if (homeXHTTP.readyState === XMLHttpRequest.DONE) {
+            if (homeXHTTP.status === 200) {
                 const data = JSON.parse(homeXHTTP.responseText);
-                const table = document.querySelector(".tableHistory");
-                data.forEach((item) => {
-                    const row = document.createElement("tr");
-                    const matchMode =
-                        item.modalidade === 0 ? "Normal" : "Rivotril";
-                    const matchResult =
-                        item.resultado === 0 ? "Derrota" : "Vitória";
+                if (data.length > 0) {
+                    const table = document.querySelector(".tableHistory");
+                    data.forEach((item) => {
+                        const row = document.createElement("tr");
+                        const matchMode =
+                            item.modalidade === 0 ? "Normal" : "Rivotril";
+                        const matchResult =
+                            item.resultado === 0 ? "Derrota" : "Vitória";
 
-                    const matchDate = new Date(
-                        item.datahora
-                    ).toLocaleDateString();
+                        const matchDate = new Date(
+                            item.datahora
+                        ).toLocaleDateString();
 
-                    const matchTime = new Date(
-                        item.datahora
-                    ).toLocaleTimeString();
+                        const matchTime = new Date(
+                            item.datahora
+                        ).toLocaleTimeString();
 
-                    row.innerHTML = `
-                        <td>${item.linhas}x${item.colunas}</td>
-                        <td>${item.bombas}</td>
-                        <td>${matchMode}</td>
-                        <td>${formatTime(item.tempo)}</td>
-                        <td>${matchResult}</td>
-                        <td>${matchDate}</td>
-                        <td>${matchTime}</td>
-                    `;
-                    table.appendChild(row);
-                });
+                        row.innerHTML = `
+                            <td>${item.linhas}x${item.colunas}</td>
+                            <td>${item.bombas}</td>
+                            <td>${matchMode}</td>
+                            <td>${formatTime(item.tempo)}</td>
+                            <td>${matchResult}</td>
+                            <td>${matchDate}</td>
+                            <td>${matchTime}</td>
+                        `;
+                        table.appendChild(row);
+                    });
+                } else {
+                    const tableSection = document.querySelector(".history");
+                    const noGamesText = document.createElement("p");
+                    noGamesText.innerHTML = "Nenhum registro de jogo";
+                    tableSection.removeChild(
+                        document.querySelector(".tableHistory")
+                    );
+                    tableSection.appendChild(noGamesText);
+                }
             } else {
                 console.log(homeXHTTP.responseText);
             }

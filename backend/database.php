@@ -1,12 +1,6 @@
 <?php
-$host = "localhost";
-$dbname = "minefield";
-$user = "root";
-$pwd = "";
-
-
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $user, $pwd);
+    require "connectToDatabase.php";
 
     $usuario =
         "CREATE TABLE IF NOT EXISTS usuario(
@@ -45,7 +39,7 @@ try {
         AS
         SELECT * FROM partida
         WHERE resultado = 1
-        ORDER BY (linhas*colunas) DESC, bombas DESC, tempo DESC
+        ORDER BY (linhas*colunas) DESC, bombas DESC, tempo ASC
         LIMIT 10";
 
     $conn->exec($view_ranking);

@@ -55,7 +55,7 @@ function login(e) {
     authXHTTP = new XMLHttpRequest();
     if (!authXHTTP) {
         console.log("Erro ao criar objeto xhttp");
-        return;
+        return false;
     }
     const loginData = new FormData(document.getElementById("loginForm"));
     authXHTTP.onreadystatechange = authServer;
@@ -70,9 +70,19 @@ function signOut() {
         console.log("Erro ao criar objeto xhttp");
         return;
     }
+    authXHTTP.onreadystatechange = () => {
+        try {
+            if (authXHTTP.readyState === XMLHttpRequest.DONE) {
+                if (authXHTTP.status === 200) {
+                    redirectTo("login");
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
     authXHTTP.open("POST", "../backend/logout.php");
     authXHTTP.send();
-    location.reload();
 }
 
 function generateAuthError(message) {
@@ -85,6 +95,7 @@ function generateAuthError(message) {
     const errorElement = document.createElement("div");
     errorElement.id = "errorMessage";
     errorElement.style.color = "red";
+    errorElement.style.marginTop = "10px";
     errorElement.style.textAlign = "center";
     errorElement.textContent = message;
 
@@ -100,10 +111,10 @@ function generateAuthError(message) {
 
 function authServer() {
     try {
-        if (authXHTTP.readyState == XMLHttpRequest.DONE) {
-            if (authXHTTP.status == 200) {
+        if (authXHTTP.readyState === XMLHttpRequest.DONE) {
+            if (authXHTTP.status === 200) {
                 redirectTo("home");
-            } else if (authXHTTP.status == 401 || authXHTTP.status == 409) {
+            } else if (authXHTTP.status === 401 || authXHTTP.status === 409) {
                 generateAuthError(authXHTTP.responseText);
             } else {
                 console.log(authXHTTP.responseText);
