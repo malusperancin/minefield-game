@@ -35,7 +35,7 @@ try {
     $conn->exec($partida);
 
     $view_ranking =
-        "CREATE VIEW ranking_global
+        "CREATE VIEW IF NOT EXISTS ranking_global
         AS
         SELECT * FROM partida
         WHERE resultado = 1
