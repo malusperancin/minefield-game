@@ -17,7 +17,6 @@ $user = $auth->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
     $_SESSION["loggedIn"] = false;
-    //require "logout.php";
     header("Location: ../views/login.php");
 } else {
     $_SESSION["loggedIn"] = true;
