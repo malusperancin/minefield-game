@@ -20,7 +20,6 @@ function mountRanking() {
         if (rankingXHTTP.readyState === XMLHttpRequest.DONE) {
             if (rankingXHTTP.status === 200) {
                 const data = JSON.parse(rankingXHTTP.responseText);
-                console.log(data);
                 if (data.length > 0) {
                     const table = document.querySelector(".tableRanking");
 
